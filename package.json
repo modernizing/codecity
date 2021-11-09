@@ -1,0 +1,36 @@
+{
+  "name": "three-typescript-starter",
+  "version": "1.0.0",
+  "description": "three.js + typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phodal/codexity.git"
+  },
+  "keywords": [],
+  "author": "Phodal HUANG",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/phodal/codexity/issues"
+  },
+  "homepage": "https://github.com/phodal/codexity#readme",
+  "devDependencies": {
+    "css-loader": "latest",
+    "html-webpack-plugin": "latest",
+    "progress-bar-webpack-plugin": "latest",
+    "style-loader": "latest",
+    "ts-loader": "latest",
+    "typescript": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest",
+    "webpack-dev-server": "latest",
+    "@types/three": "^0.134.0"
+  },
+  "dependencies": {
+    "three": "latest"
+  }
+}
