@@ -12,11 +12,14 @@ export function createCity() {
 
     const geometry = new THREE.BoxGeometry(0.15, height, 0.15);
 
-    const object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff}));
+    const object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color : 0xD3D6E8}));
 
     object.position.x = Math.random() * 4 - 2;
     object.position.y = height / 2;
     object.position.z = Math.random() * 4 - 2;
+
+    object.castShadow = true
+
 
     // object.rotation.x = Math.random() * 2 * Math.PI;
     // object.rotation.y = Math.random() * 2 * Math.PI;

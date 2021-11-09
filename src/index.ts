@@ -7,9 +7,10 @@ import {XRControllerModelFactory} from 'three/examples/jsm/webxr/XRControllerMod
 import {XRHandModelFactory} from 'three/examples/jsm/webxr/XRHandModelFactory.js';
 import {createCity} from "./City";
 import * as Stats from "stats.js";
+import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
 
 let container;
-let camera, scene, renderer;
+let camera, scene, renderer, camControls;
 let hand1, hand2;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
@@ -32,6 +33,18 @@ const spheres = [];
 
 init();
 animate();
+
+function createFirstPersonCtrl() {
+  let camControls;
+  camControls = new FirstPersonControls(camera)
+  camControls.lookSpeed = 0.02
+  camControls.movementSpeed = 3
+  camControls.noFly = true
+  camControls.lookVertical = true
+  camControls.constrainVertical = false
+  camControls.maxPolarAngle = Math.PI / 2
+  return camControls
+}
 
 function init() {
   container = document.createElement('div');
@@ -58,15 +71,17 @@ function init() {
 
   scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
-  const light = new THREE.DirectionalLight(0xffffff);
-  light.position.set(0, 6, 0);
+  const light = new THREE.DirectionalLight(0xffffff, 0.8);
+  light.position.set(1, 6, 3);
   light.castShadow = true;
-  light.shadow.camera.top = 2;
-  light.shadow.camera.bottom = -2;
-  light.shadow.camera.right = 2;
-  light.shadow.camera.left = -2;
-  light.shadow.mapSize.set(4096, 4096);
+  // light.shadow.mapSize.set(4096, 4096);
+
+  const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
+  spotLightReverse.position.set(20, 50, 20);
+  spotLightReverse.castShadow = true;
+
   scene.add(light);
+  scene.add(spotLightReverse);
 
   //
   renderer = new THREE.WebGLRenderer({antialias: true});
@@ -125,7 +140,10 @@ function init() {
   controller2.add(line.clone());
 
   stats = new Stats();
-  stats.showPanel(1); // 0: fps, 1: ms, 2: mb, 3+: custom
+  stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+
+  // createFirstPersonCtrl();
+
   document.body.appendChild(stats.dom);
 
   window.addEventListener('resize', onWindowResize);
@@ -234,7 +252,6 @@ function render() {
     const distance = indexTip1Pos.distanceTo(indexTip2Pos);
     const newScale = scaling.initialScale + distance / scaling.initialDistance - 1;
     scaling.object.scale.setScalar(newScale);
-
   }
 
   renderer.render(scene, camera);
