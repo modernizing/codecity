@@ -8,6 +8,7 @@ import {XRHandModelFactory} from 'three/examples/jsm/webxr/XRHandModelFactory.js
 import {createCity} from "./City";
 import * as Stats from "stats.js";
 import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
+import {BoxHelper} from "three";
 
 let container;
 let camera, scene, renderer, camControls;
@@ -15,6 +16,7 @@ let hand1, hand2;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 let stats;
+let sphere: any = {};
 
 const tmpVector1 = new THREE.Vector3();
 const tmpVector2 = new THREE.Vector3();
@@ -53,14 +55,14 @@ function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x444444);
 
-  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10);
-  camera.position.set(-1, 1.6, 8);
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(-8, 8, 8);
 
   controls = new OrbitControls(camera, container);
   controls.target.set(0, 1.6, 0);
   controls.update();
 
-  const floorGeometry = new THREE.PlaneGeometry(4, 4);
+  const floorGeometry = new THREE.PlaneGeometry(10, 10);
   const floorMaterial = new THREE.MeshStandardMaterial({color: 0x222222});
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
@@ -72,15 +74,14 @@ function init() {
   scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
   const light = new THREE.DirectionalLight(0xffffff, 0.8);
-  light.position.set(1, 6, 3);
+  light.position.set(10, 10, 10);
   light.castShadow = true;
-  // light.shadow.mapSize.set(4096, 4096);
+  light.shadow.mapSize.set(4096, 4096);
+  scene.add(light);
 
   const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
-  spotLightReverse.position.set(20, 50, 20);
+  spotLightReverse.position.set(-10, 10, -10);
   spotLightReverse.castShadow = true;
-
-  scene.add(light);
   scene.add(spotLightReverse);
 
   //
