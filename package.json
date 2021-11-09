@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/phodal/codexity#readme",
   "devDependencies": {
+    "@types/three": "^0.134.0",
     "css-loader": "latest",
     "html-webpack-plugin": "latest",
     "progress-bar-webpack-plugin": "latest",
@@ -27,10 +28,11 @@
     "typescript": "latest",
     "webpack": "latest",
     "webpack-cli": "latest",
-    "webpack-dev-server": "latest",
-    "@types/three": "^0.134.0"
+    "webpack-dev-server": "latest"
   },
   "dependencies": {
+    "cannon": "^0.6.2",
+    "stats.js": "^0.17.0",
     "three": "latest"
   }
 }

@@ -15,7 +15,7 @@ export function createCity() {
     const object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff}));
 
     object.position.x = Math.random() * 4 - 2;
-    object.position.y = 0;
+    object.position.y = height / 2;
     object.position.z = Math.random() * 4 - 2;
 
     // object.rotation.x = Math.random() * 2 * Math.PI;

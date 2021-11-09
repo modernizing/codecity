@@ -6,12 +6,14 @@ import {VRButton} from 'three/examples/jsm/webxr/VRButton.js';
 import {XRControllerModelFactory} from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import {XRHandModelFactory} from 'three/examples/jsm/webxr/XRHandModelFactory.js';
 import {createCity} from "./City";
+import * as Stats from "stats.js";
 
 let container;
 let camera, scene, renderer;
 let hand1, hand2;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
+let stats;
 
 const tmpVector1 = new THREE.Vector3();
 const tmpVector2 = new THREE.Vector3();
@@ -39,7 +41,7 @@ function init() {
   scene.background = new THREE.Color(0x444444);
 
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10);
-  camera.position.set(0, 1.6, 3);
+  camera.position.set(-1, 1.6, 8);
 
   controls = new OrbitControls(camera, container);
   controls.target.set(0, 1.6, 0);
@@ -122,8 +124,13 @@ function init() {
   controller1.add(line.clone());
   controller2.add(line.clone());
 
+  stats = new Stats();
+  stats.showPanel(1); // 0: fps, 1: ms, 2: mb, 3+: custom
+  document.body.appendChild(stats.dom);
+
   window.addEventListener('resize', onWindowResize);
 }
+
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -231,4 +238,5 @@ function render() {
   }
 
   renderer.render(scene, camera);
+  stats.update();
 }
