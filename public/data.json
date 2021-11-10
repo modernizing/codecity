@@ -1,636 +1,528 @@
-[
-  {
-    "file_name": "PepperApplication.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/PepperApplication.java",
-    "package": "com.phodal.pepper",
-    "imports": [
-      "org.springframework.boot.SpringApplication",
-      "org.springframework.boot.autoconfigure.SpringBootApplication"
-    ],
-    "classes": [
-      {
-        "name": "PepperApplication",
-        "package": "com.phodal.pepper",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 5,
-          "column": 0
+{
+  "name": "<root>",
+  "data": {
+    "git": {
+      "head": "73e668856647ce0e01f818478de444baf3ebfc44",
+      "remote_url": "https://github.com/coco-rs/coco.fixtures"
+    },
+    "git_meta": {
+      "users": [
+        {
+          "id": 0,
+          "user": {
+            "email": "noreply@github.com",
+            "name": "GitHub"
+          }
         },
-        "end": {
-          "row": 12,
-          "column": 1
+        {
+          "id": 1,
+          "user": {
+            "email": "h@phodal.com",
+            "name": "Phodal Huang"
+          }
+        }
+      ]
+    }
+  },
+  "children": [
+    {
+      "name": "LICENSE",
+      "data": {
+        "loc": {
+          "binary": true,
+          "blanks": 0,
+          "bytes": 0,
+          "code": 0,
+          "comments": 0,
+          "language": "",
+          "lines": 0
+        },
+        "git": {
+          "age_in_days": 43,
+          "creation_date": 1610519809,
+          "details": [
+            {
+              "commit_day": 1610496000,
+              "commits": 1,
+              "lines_added": 24,
+              "lines_deleted": 0,
+              "users": [
+                0,
+                1
+              ]
+            }
+          ],
+          "last_update": 1610519809,
+          "user_count": 2,
+          "users": [
+            0,
+            1
+          ]
         }
       }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "DateTimeImpl.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/date/mockito/DateTimeImpl.java",
-    "package": "com.phodal.pepper.normal.date.mockito",
-    "imports": [
-      "java.util.Date"
-    ],
-    "classes": [
-      {
-        "name": "DateTimeImpl",
-        "package": "com.phodal.pepper.normal.date.mockito",
-        "extends": [],
-        "implements": [
-          "DateTime"
-        ],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 8,
-          "column": 0
+    },
+    {
+      "name": "README.md",
+      "data": {
+        "git": {
+          "age_in_days": 41,
+          "creation_date": 1610519809,
+          "details": [
+            {
+              "commit_day": 1610496000,
+              "commits": 1,
+              "lines_added": 2,
+              "lines_deleted": 0,
+              "users": [
+                0,
+                1
+              ]
+            },
+            {
+              "commit_day": 1610668800,
+              "commits": 1,
+              "lines_added": 4,
+              "lines_deleted": 1,
+              "users": [
+                1
+              ]
+            }
+          ],
+          "last_update": 1610694788,
+          "user_count": 2,
+          "users": [
+            0,
+            1
+          ]
         },
-        "end": {
-          "row": 13,
-          "column": 1
+        "loc": {
+          "binary": false,
+          "blanks": 1,
+          "bytes": 58,
+          "code": 0,
+          "comments": 4,
+          "language": "Markdown",
+          "lines": 0
         }
       }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "MyDateClass.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/date/mockito/MyDateClass.java",
-    "package": "com.phodal.pepper.normal.date.mockito",
-    "imports": [],
-    "classes": [
-      {
-        "name": "MyDateClass",
-        "package": "com.phodal.pepper.normal.date.mockito",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
+    },
+    {
+      "name": "guava",
+      "children": [
+        {
+          "name": "AllowConcurrentEvents.java",
+          "data": {
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 35,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 3,
+              "bytes": 1273,
+              "code": 10,
+              "comments": 22,
+              "language": "Java",
+              "lines": 10
+            }
+          }
         },
-        "end": {
-          "row": 12,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "MyDictionary.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/exception/MyDictionary.java",
-    "package": "com.phodal.pepper.normal.exception",
-    "imports": [
-      "java.util.HashMap",
-      "java.util.Map"
-    ],
-    "classes": [
-      {
-        "name": "MyDictionary",
-        "package": "com.phodal.pepper.normal.exception",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 5,
-          "column": 0
+        {
+          "name": "AsyncEventBus.java",
+          "data": {
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 64,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 6,
+              "bytes": 2608,
+              "code": 15,
+              "comments": 43,
+              "language": "Java",
+              "lines": 15
+            }
+          }
         },
-        "end": {
-          "row": 15,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "NewFileExample.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/file/NewFileExample.java",
-    "package": "com.phodal.pepper.normal.file",
-    "imports": [
-      "java.io.File"
-    ],
-    "classes": [
-      {
-        "name": "NewFileExample",
-        "package": "com.phodal.pepper.normal.file",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 4,
-          "column": 0
+        {
+          "name": "DeadEvent.java",
+          "data": {
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 72,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 9,
+              "bytes": 2156,
+              "code": 23,
+              "comments": 40,
+              "language": "Java",
+              "lines": 23
+            }
+          }
         },
-        "end": {
-          "row": 11,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "ClassCallStaticMethodObj.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/ClassCallStaticMethodObj.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [],
-    "classes": [
-      {
-        "name": "ClassCallStaticMethodObj",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
+        {
+          "name": "Dispatcher.java",
+          "data": {
+            "loc": {
+              "binary": false,
+              "blanks": 25,
+              "bytes": 7312,
+              "code": 96,
+              "comments": 69,
+              "language": "Java",
+              "lines": 96
+            },
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 190,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            }
+          }
         },
-        "end": {
-          "row": 7,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "FinalClass.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/FinalClass.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [],
-    "classes": [
-      {
-        "name": "FinalClass",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
+        {
+          "name": "EventBus.java",
+          "data": {
+            "loc": {
+              "binary": false,
+              "blanks": 22,
+              "bytes": 9298,
+              "code": 108,
+              "comments": 123,
+              "language": "Java",
+              "lines": 108
+            },
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 253,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            }
+          }
         },
-        "end": {
-          "row": 12,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "MockCalenderInstance.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/MockCalenderInstance.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [
-      "java.util.Calendar",
-      "java.util.Date"
-    ],
-    "classes": [
-      {
-        "name": "MockCalenderInstance",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 5,
-          "column": 0
+        {
+          "name": "Subscribe.java",
+          "data": {
+            "loc": {
+              "binary": false,
+              "blanks": 3,
+              "bytes": 1525,
+              "code": 10,
+              "comments": 27,
+              "language": "Java",
+              "lines": 10
+            },
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 40,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            }
+          }
         },
-        "end": {
-          "row": 9,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "MockNewClass.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/MockNewClass.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [
-      "java.awt"
-    ],
-    "classes": [
-      {
-        "name": "MockNewClass",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 4,
-          "column": 0
+        {
+          "name": "Subscriber.java",
+          "data": {
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 148,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 20,
+              "bytes": 4883,
+              "code": 84,
+              "comments": 44,
+              "language": "Java",
+              "lines": 84
+            }
+          }
         },
-        "end": {
-          "row": 8,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "PrivateMethodDemo.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/PrivateMethodDemo.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [],
-    "classes": [
-      {
-        "name": "PrivateMethodDemo",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
+        {
+          "name": "SubscriberExceptionContext.java",
+          "data": {
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 69,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 9,
+              "bytes": 2259,
+              "code": 28,
+              "comments": 32,
+              "language": "Java",
+              "lines": 28
+            }
+          }
         },
-        "end": {
-          "row": 26,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "SpyMockEmployeeService.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/SpyMockEmployeeService.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [],
-    "classes": [
-      {
-        "name": "SpyMockEmployeeService",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
+        {
+          "name": "SubscriberExceptionHandler.java",
+          "data": {
+            "loc": {
+              "binary": false,
+              "blanks": 2,
+              "bytes": 894,
+              "code": 4,
+              "comments": 19,
+              "language": "Java",
+              "lines": 4
+            },
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 25,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            }
+          }
         },
-        "end": {
-          "row": 22,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "StaticMethod.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/StaticMethod.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [],
-    "classes": [
-      {
-        "name": "StaticMethod",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
+        {
+          "name": "SubscriberRegistry.java",
+          "data": {
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 269,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 34,
+              "bytes": 10714,
+              "code": 181,
+              "comments": 54,
+              "language": "Java",
+              "lines": 181
+            }
+          }
         },
-        "end": {
-          "row": 12,
-          "column": 1
+        {
+          "name": "package-info.java",
+          "data": {
+            "git": {
+              "age_in_days": 0,
+              "creation_date": 1614240428,
+              "details": [
+                {
+                  "commit_day": 1614211200,
+                  "commits": 1,
+                  "lines_added": 257,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1614240428,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 2,
+              "bytes": 12130,
+              "code": 5,
+              "comments": 250,
+              "language": "Java",
+              "lines": 5
+            }
+          }
         }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "SystemClassUser.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/SystemClassUser.java",
-    "package": "com.phodal.pepper.powermock",
-    "imports": [
-      "java.io.IOException",
-      "java.io.UnsupportedEncodingException",
-      "java.net",
-      "java.util.Collections",
-      "java.util.List",
-      "java.util.UUID"
-    ],
-    "classes": [
-      {
-        "name": "SystemClassUser",
-        "package": "com.phodal.pepper.powermock",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 9,
-          "column": 0
-        },
-        "end": {
-          "row": 75,
-          "column": 1
+      ]
+    },
+    {
+      "name": "src",
+      "children": [
+        {
+          "name": "main.rs",
+          "data": {
+            "git": {
+              "age_in_days": 42,
+              "creation_date": 1610541520,
+              "details": [
+                {
+                  "commit_day": 1610496000,
+                  "commits": 1,
+                  "lines_added": 0,
+                  "lines_deleted": 0,
+                  "users": [
+                    1
+                  ]
+                }
+              ],
+              "last_update": 1610541520,
+              "user_count": 1,
+              "users": [
+                1
+              ]
+            },
+            "loc": {
+              "binary": false,
+              "blanks": 0,
+              "bytes": 0,
+              "code": 0,
+              "comments": 0,
+              "language": "Rust",
+              "lines": 0
+            }
+          }
         }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "BaseParser.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/parser/BaseParser.java",
-    "package": "com.phodal.pepper.refactor.parser",
-    "imports": [],
-    "classes": [],
-    "functions": []
-  },
-  {
-    "file_name": "JsonParser.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/parser/JsonParser.java",
-    "package": "com.phodal.pepper.refactor.parser",
-    "imports": [],
-    "classes": [
-      {
-        "name": "JsonParser",
-        "package": "com.phodal.pepper.refactor.parser",
-        "extends": [],
-        "implements": [
-          "BaseParser"
-        ],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
-        },
-        "end": {
-          "row": 7,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "XmlParser.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/parser/XmlParser.java",
-    "package": "com.phodal.pepper.refactor.parser",
-    "imports": [],
-    "classes": [
-      {
-        "name": "XmlParser",
-        "package": "com.phodal.pepper.refactor.parser",
-        "extends": [],
-        "implements": [
-          "BaseParser"
-        ],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
-        },
-        "end": {
-          "row": 7,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "FileHandler.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileHandler.java",
-    "package": "com.phodal.pepper.refactor.staticclass",
-    "imports": [],
-    "classes": [
-      {
-        "name": "FileHandler",
-        "package": "com.phodal.pepper.refactor.staticclass",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
-        },
-        "end": {
-          "row": 6,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "FileVerify.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileVerify.java",
-    "package": "com.phodal.pepper.refactor.staticclass",
-    "imports": [
-      "java.util.Map"
-    ],
-    "classes": [
-      {
-        "name": "FileVerify",
-        "package": "com.phodal.pepper.refactor.staticclass",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 4,
-          "column": 0
-        },
-        "end": {
-          "row": 8,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "FileVerifyFactory.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileVerifyFactory.java",
-    "package": "com.phodal.pepper.refactor.staticclass",
-    "imports": [],
-    "classes": [],
-    "functions": []
-  },
-  {
-    "file_name": "FileVerifyFactoryImpl.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileVerifyFactoryImpl.java",
-    "package": "com.phodal.pepper.refactor.staticclass",
-    "imports": [],
-    "classes": [
-      {
-        "name": "FileVerifyFactoryImpl",
-        "package": "com.phodal.pepper.refactor.staticclass",
-        "extends": [],
-        "implements": [
-          "FileVerifyFactory"
-        ],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 2,
-          "column": 0
-        },
-        "end": {
-          "row": 7,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "LogFileHandle.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/LogFileHandle.java",
-    "package": "com.phodal.pepper.refactor.staticclass",
-    "imports": [
-      "java.util.HashMap",
-      "java.util.Map"
-    ],
-    "classes": [
-      {
-        "name": "LogFileHandle",
-        "package": "com.phodal.pepper.refactor.staticclass",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 5,
-          "column": 0
-        },
-        "end": {
-          "row": 35,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "RegisterPattern.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/RegisterPattern.java",
-    "package": "com.phodal.pepper.refactor.switchcases",
-    "imports": [
-      "java.lang.annotation.ElementType",
-      "java.lang.annotation.Retention",
-      "java.lang.annotation.RetentionPolicy",
-      "java.lang.annotation.Target"
-    ],
-    "classes": [],
-    "functions": []
-  },
-  {
-    "file_name": "RegisterUsecase.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/RegisterUsecase.java",
-    "package": "com.phodal.pepper.refactor.switchcases",
-    "imports": [
-      "com.phodal.pepper.refactor.switchcases.clz.CaseInterface",
-      "org.reflections.Reflections",
-      "java.util.HashMap"
-    ],
-    "classes": [
-      {
-        "name": "RegisterUsecase",
-        "package": "com.phodal.pepper.refactor.switchcases",
-        "extends": [],
-        "implements": [],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 7,
-          "column": 0
-        },
-        "end": {
-          "row": 34,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "CaseA.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/clz/CaseA.java",
-    "package": "com.phodal.pepper.refactor.switchcases.clz",
-    "imports": [
-      "com.phodal.pepper.refactor.switchcases.RegisterPattern"
-    ],
-    "classes": [
-      {
-        "name": "CaseA",
-        "package": "com.phodal.pepper.refactor.switchcases.clz",
-        "extends": [],
-        "implements": [
-          "CaseInterface"
-        ],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 4,
-          "column": 0
-        },
-        "end": {
-          "row": 11,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "CaseB.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/clz/CaseB.java",
-    "package": "com.phodal.pepper.refactor.switchcases.clz",
-    "imports": [
-      "com.phodal.pepper.refactor.switchcases.RegisterPattern"
-    ],
-    "classes": [
-      {
-        "name": "CaseB",
-        "package": "com.phodal.pepper.refactor.switchcases.clz",
-        "extends": [],
-        "implements": [
-          "CaseInterface"
-        ],
-        "constant": [],
-        "functions": [],
-        "start": {
-          "row": 4,
-          "column": 0
-        },
-        "end": {
-          "row": 11,
-          "column": 1
-        }
-      }
-    ],
-    "functions": []
-  },
-  {
-    "file_name": "CaseInterface.java",
-    "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/clz/CaseInterface.java",
-    "package": "com.phodal.pepper.refactor.switchcases.clz",
-    "imports": [],
-    "classes": [],
-    "functions": []
-  }
-]
+      ]
+    }
+  ]
+}
