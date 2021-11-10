@@ -1,6 +1,6 @@
 [
   {
-    "name": "",
+    "file_name": "PepperApplication.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/PepperApplication.java",
     "package": "com.phodal.pepper",
     "imports": [
@@ -28,7 +28,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "DateTimeImpl.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/date/mockito/DateTimeImpl.java",
     "package": "com.phodal.pepper.normal.date.mockito",
     "imports": [
@@ -57,7 +57,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "MyDateClass.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/date/mockito/MyDateClass.java",
     "package": "com.phodal.pepper.normal.date.mockito",
     "imports": [],
@@ -82,7 +82,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "MyDictionary.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/exception/MyDictionary.java",
     "package": "com.phodal.pepper.normal.exception",
     "imports": [
@@ -110,7 +110,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "NewFileExample.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/normal/file/NewFileExample.java",
     "package": "com.phodal.pepper.normal.file",
     "imports": [
@@ -137,7 +137,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "ClassCallStaticMethodObj.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/ClassCallStaticMethodObj.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [],
@@ -162,7 +162,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "FinalClass.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/FinalClass.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [],
@@ -187,7 +187,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "MockCalenderInstance.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/MockCalenderInstance.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [
@@ -215,7 +215,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "MockNewClass.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/MockNewClass.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [
@@ -242,7 +242,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "PrivateMethodDemo.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/PrivateMethodDemo.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [],
@@ -267,7 +267,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "SpyMockEmployeeService.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/SpyMockEmployeeService.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [],
@@ -292,7 +292,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "StaticMethod.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/StaticMethod.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [],
@@ -317,7 +317,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "SystemClassUser.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/powermock/SystemClassUser.java",
     "package": "com.phodal.pepper.powermock",
     "imports": [
@@ -349,7 +349,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "BaseParser.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/parser/BaseParser.java",
     "package": "com.phodal.pepper.refactor.parser",
     "imports": [],
@@ -357,7 +357,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "JsonParser.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/parser/JsonParser.java",
     "package": "com.phodal.pepper.refactor.parser",
     "imports": [],
@@ -384,7 +384,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "XmlParser.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/parser/XmlParser.java",
     "package": "com.phodal.pepper.refactor.parser",
     "imports": [],
@@ -411,7 +411,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "FileHandler.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileHandler.java",
     "package": "com.phodal.pepper.refactor.staticclass",
     "imports": [],
@@ -436,7 +436,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "FileVerify.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileVerify.java",
     "package": "com.phodal.pepper.refactor.staticclass",
     "imports": [
@@ -463,7 +463,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "FileVerifyFactory.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileVerifyFactory.java",
     "package": "com.phodal.pepper.refactor.staticclass",
     "imports": [],
@@ -471,7 +471,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "FileVerifyFactoryImpl.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/FileVerifyFactoryImpl.java",
     "package": "com.phodal.pepper.refactor.staticclass",
     "imports": [],
@@ -498,7 +498,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "LogFileHandle.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/staticclass/LogFileHandle.java",
     "package": "com.phodal.pepper.refactor.staticclass",
     "imports": [
@@ -526,7 +526,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "RegisterPattern.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/RegisterPattern.java",
     "package": "com.phodal.pepper.refactor.switchcases",
     "imports": [
@@ -539,7 +539,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "RegisterUsecase.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/RegisterUsecase.java",
     "package": "com.phodal.pepper.refactor.switchcases",
     "imports": [
@@ -568,7 +568,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "CaseA.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/clz/CaseA.java",
     "package": "com.phodal.pepper.refactor.switchcases.clz",
     "imports": [
@@ -597,7 +597,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "CaseB.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/clz/CaseB.java",
     "package": "com.phodal.pepper.refactor.switchcases.clz",
     "imports": [
@@ -626,7 +626,7 @@
     "functions": []
   },
   {
-    "name": "",
+    "file_name": "CaseInterface.java",
     "path": "_fixtures/java/src/main/java/com/phodal/pepper/refactor/switchcases/clz/CaseInterface.java",
     "package": "com.phodal.pepper.refactor.switchcases.clz",
     "imports": [],
