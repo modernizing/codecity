@@ -11,7 +11,13 @@ module.exports = {
     filename: 'bundle.js',
     path: resolve(__dirname, 'dist'),
   },
-
+  devServer: {
+    static: {
+      directory: resolve(__dirname, 'public'),
+    },
+    compress: true,
+    port: 9000,
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },

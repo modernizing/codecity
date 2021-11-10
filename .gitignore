@@ -45,3 +45,4 @@ package-lock.json
 .awcache
 .idea
 samples
+public/data.json
