@@ -68,23 +68,8 @@ function loadData(): Promise<any> {
   return d3.json("data.json")
 }
 
-function displayText(building: any, font: Font, color: number, x: number, height: number, y: number) {
-  const textGeo = new TextGeometry(building.name, {
-    font: font,
-    size: 0.01,
-    height: 0.01,
-    curveSegments: 0.1,
-  });
-
-  let textMaterial = new THREE.MeshPhongMaterial({color: color});
-  let mesh = new THREE.Mesh(textGeo, textMaterial);
-  mesh.position.set(x, height * 1.1, y);
-  return mesh;
-}
-
 function addCuboid(w, h, d, x, y, z, color, scene, pool, node) {
   const cuboid = new THREE.Mesh(pool.geometry, pool.materials[color]);
-  console.log(y, node.data.changes);
   cuboid.position.set(x + w / 2 - 500, y, z + d / 2 - 500);
   cuboid.scale.set(w, h, d);
 
