@@ -8,35 +8,6 @@ let CityInfo = {
   maxChanges: 0,
 }
 
-export function createBuildingData(data) {
-  const rootNode = d3.hierarchy(data);
-  rootNode.descendants().forEach((node) => {
-    node.data.hierarchNode = node;
-  });
-
-  let maxDepth = 10;
-  const allNodes = rootNode
-    .descendants()
-    .map((d) => {
-      (d as any).changes = d.data.data?.git?.details?.length;
-      (d as any).lines = d.data.data?.loc?.code;
-      (d as any).name = d.data.name;
-      if (CityInfo.maxLines < (d as any).lines) {
-        CityInfo.maxLines = (d as any).lines
-      }
-      if (CityInfo.maxChanges < (d as any).changes) {
-        CityInfo.maxChanges = (d as any).changes
-      }
-      return d;
-    })
-    .filter((d) => d.depth <= maxDepth)
-    .filter(
-      (d) => d.children === undefined || d.depth === maxDepth
-    );
-
-  return allNodes;
-}
-
 function treemap(data) {
   let root = d3.treemap()
     .size([1000, 1000])
