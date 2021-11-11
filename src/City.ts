@@ -1,9 +1,7 @@
 import * as THREE from "three";
 import {Scene} from "three";
 import * as d3 from "d3";
-import {BoxLineGeometry} from "three/examples/jsm/geometries/BoxLineGeometry";
 import {Font} from "three/examples/jsm/loaders/FontLoader";
-import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
 
 let CityInfo = {
   maxLines: 0,
