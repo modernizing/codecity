@@ -2,9 +2,11 @@
 
 > code city is a code explorer for fun. 
 
-- [ ] render city with Three.js
-- [ ] code render
+- [x] render city with Three.js
+- [x] code render
 - [ ] code explorer with city
+  - [ ] interactive
+  - [ ] tooltip
 - [ ] support for XR
   - [ ] Oculus Quest
   - [ ] others
