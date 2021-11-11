@@ -37,4 +37,13 @@ export class App {
 
     document.body.appendChild(App.stats.dom);
   }
+
+  static createControls() {
+    App.controls = new OrbitControls(App.camera, App.container);
+    App.controls.enableDamping = true;
+    App.controls.dampingFactor = 0.25;
+    App.controls.enableZoom = true;
+    App.controls.target.set(0, 0, 0);
+    App.controls.update();
+  }
 }

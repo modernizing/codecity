@@ -1,14 +1,12 @@
 import "../style.css"
 import * as THREE from 'three';
-
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {VRButton} from 'three/examples/jsm/webxr/VRButton.js';
 import {XRControllerModelFactory} from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import {XRHandModelFactory} from 'three/examples/jsm/webxr/XRHandModelFactory.js';
 import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
 
 import {createCity} from "./City";
-import {App} from "./App";
+import {App, createControls} from "./App";
 
 let hand1, hand2;
 let controller1, controller2;
@@ -30,54 +28,7 @@ const spheres = [];
 init();
 animate();
 
-function init() {
-  App.container = document.createElement('div');
-  document.body.appendChild(App.container);
-
-  App.scene = new THREE.Scene();
-  App.scene.background = new THREE.Color(0x444444);
-
-  App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-  App.camera.position.set(App.width, App.width, App.height);
-
-  App.controls = new OrbitControls(App.camera, App.container);
-  App.controls.enableDamping = true;
-  App.controls.dampingFactor = 0.25;
-  App.controls.enableZoom = true;
-  App.controls.target.set(0, 0, 0);
-  App.controls.update();
-
-  const floorGeometry = new THREE.PlaneGeometry(App.width, App.height);
-  const floorMaterial = new THREE.MeshStandardMaterial({color: 0x222222});
-  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  floor.rotation.x = -Math.PI / 2;
-  floor.receiveShadow = true;
-  App.scene.add(floor);
-
-  const loader = new FontLoader();
-  loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
-    createCity(font, App.scene).then(() => {
-
-    })
-  });
-
-  App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
-
-  const light = new THREE.DirectionalLight(0xffffff, 0.8);
-  light.position.set(App.width, App.height, -App.width);
-  light.castShadow = true;
-  light.shadow.mapSize.set(4096, 4096);
-  App.scene.add(light);
-
-  const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
-  spotLightReverse.position.set(-App.width, App.height, -App.width);
-  spotLightReverse.castShadow = true;
-  App.scene.add(spotLightReverse);
-
-  App.createRender();
-
-  document.body.appendChild(VRButton.createButton(App.renderer));
-
+function createrControllers() {
   // controllers
   controller1 = App.renderer.xr.getController(0);
   App.scene.add(controller1);
@@ -121,6 +72,56 @@ function init() {
 
   controller1.add(line.clone());
   controller2.add(line.clone());
+}
+
+function createLights() {
+  const light = new THREE.DirectionalLight(0xffffff, 0.8);
+  light.position.set(App.width, App.height, -App.width);
+  light.castShadow = true;
+  light.shadow.mapSize.set(4096, 4096);
+  App.scene.add(light);
+
+  const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
+  spotLightReverse.position.set(-App.width, App.height, -App.width);
+  spotLightReverse.castShadow = true;
+  App.scene.add(spotLightReverse);
+}
+
+function init() {
+  App.container = document.createElement('div');
+  document.body.appendChild(App.container);
+
+  App.scene = new THREE.Scene();
+  App.scene.background = new THREE.Color(0x444444);
+
+  App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+  App.camera.position.set(App.width, App.height, App.height);
+
+  App.createControls();
+
+  const floorGeometry = new THREE.PlaneGeometry(App.width, App.height);
+  const floorMaterial = new THREE.MeshStandardMaterial({color: 0x222222});
+  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  App.scene.add(floor);
+
+  const loader = new FontLoader();
+  loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
+    createCity(font, App.scene).then(() => {
+
+    })
+  });
+
+  App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
+
+  createLights();
+
+  App.createRender();
+
+  document.body.appendChild(VRButton.createButton(App.renderer));
+
+  createrControllers();
 
   App.createStats();
 
