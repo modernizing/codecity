@@ -47,12 +47,7 @@ jobs:
           yarn build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          ACCESS_TOKEN: ${{ secrets.SuperSecret }}
-          BRANCH: gh-pages
-          REPOSITORY_NAME: "phodal/do"
-          FOLDER: dist
-          CLEAN: true
-          CLEAN_EXCLUDE: '["CNAME"]'
-        continue-on-error: true
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build # The folder the action should deploy.
