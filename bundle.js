@@ -50758,6 +50758,44 @@ if ( typeof window !== 'undefined' ) {
 
 /***/ }),
 
+/***/ "./src/App.ts":
+/*!********************!*\
+  !*** ./src/App.ts ***!
+  \********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.App = void 0;
+const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+const Stats = __webpack_require__(/*! stats.js */ "./node_modules/stats.js/build/stats.min.js");
+class App {
+    constructor() {
+    }
+    static createRender() {
+        let renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.shadowMap.enabled = true;
+        renderer.xr.enabled = true;
+        App.renderer = renderer;
+        App.container.appendChild(renderer.domElement);
+    }
+    static createStats() {
+        App.stats = new Stats();
+        App.stats.showPanel(0);
+        document.body.appendChild(App.stats.dom);
+    }
+}
+exports.App = App;
+App.width = 1000;
+App.height = 1000;
+
+
+/***/ }),
+
 /***/ "./src/City.ts":
 /*!*********************!*\
   !*** ./src/City.ts ***!
@@ -84591,350 +84629,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/three/examples/jsm/controls/FirstPersonControls.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/three/examples/jsm/controls/FirstPersonControls.js ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FirstPersonControls": () => (/* binding */ FirstPersonControls)
-/* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-
-
-const _lookDirection = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
-const _spherical = new three__WEBPACK_IMPORTED_MODULE_0__.Spherical();
-const _target = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
-
-class FirstPersonControls {
-
-	constructor( object, domElement ) {
-
-		if ( domElement === undefined ) {
-
-			console.warn( 'THREE.FirstPersonControls: The second parameter "domElement" is now mandatory.' );
-			domElement = document;
-
-		}
-
-		this.object = object;
-		this.domElement = domElement;
-
-		// API
-
-		this.enabled = true;
-
-		this.movementSpeed = 1.0;
-		this.lookSpeed = 0.005;
-
-		this.lookVertical = true;
-		this.autoForward = false;
-
-		this.activeLook = true;
-
-		this.heightSpeed = false;
-		this.heightCoef = 1.0;
-		this.heightMin = 0.0;
-		this.heightMax = 1.0;
-
-		this.constrainVertical = false;
-		this.verticalMin = 0;
-		this.verticalMax = Math.PI;
-
-		this.mouseDragOn = false;
-
-		// internals
-
-		this.autoSpeedFactor = 0.0;
-
-		this.mouseX = 0;
-		this.mouseY = 0;
-
-		this.moveForward = false;
-		this.moveBackward = false;
-		this.moveLeft = false;
-		this.moveRight = false;
-
-		this.viewHalfX = 0;
-		this.viewHalfY = 0;
-
-		// private variables
-
-		let lat = 0;
-		let lon = 0;
-
-		//
-
-		this.handleResize = function () {
-
-			if ( this.domElement === document ) {
-
-				this.viewHalfX = window.innerWidth / 2;
-				this.viewHalfY = window.innerHeight / 2;
-
-			} else {
-
-				this.viewHalfX = this.domElement.offsetWidth / 2;
-				this.viewHalfY = this.domElement.offsetHeight / 2;
-
-			}
-
-		};
-
-		this.onMouseDown = function ( event ) {
-
-			if ( this.domElement !== document ) {
-
-				this.domElement.focus();
-
-			}
-
-			if ( this.activeLook ) {
-
-				switch ( event.button ) {
-
-					case 0: this.moveForward = true; break;
-					case 2: this.moveBackward = true; break;
-
-				}
-
-			}
-
-			this.mouseDragOn = true;
-
-		};
-
-		this.onMouseUp = function ( event ) {
-
-			if ( this.activeLook ) {
-
-				switch ( event.button ) {
-
-					case 0: this.moveForward = false; break;
-					case 2: this.moveBackward = false; break;
-
-				}
-
-			}
-
-			this.mouseDragOn = false;
-
-		};
-
-		this.onMouseMove = function ( event ) {
-
-			if ( this.domElement === document ) {
-
-				this.mouseX = event.pageX - this.viewHalfX;
-				this.mouseY = event.pageY - this.viewHalfY;
-
-			} else {
-
-				this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
-				this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
-
-			}
-
-		};
-
-		this.onKeyDown = function ( event ) {
-
-			switch ( event.code ) {
-
-				case 'ArrowUp':
-				case 'KeyW': this.moveForward = true; break;
-
-				case 'ArrowLeft':
-				case 'KeyA': this.moveLeft = true; break;
-
-				case 'ArrowDown':
-				case 'KeyS': this.moveBackward = true; break;
-
-				case 'ArrowRight':
-				case 'KeyD': this.moveRight = true; break;
-
-				case 'KeyR': this.moveUp = true; break;
-				case 'KeyF': this.moveDown = true; break;
-
-			}
-
-		};
-
-		this.onKeyUp = function ( event ) {
-
-			switch ( event.code ) {
-
-				case 'ArrowUp':
-				case 'KeyW': this.moveForward = false; break;
-
-				case 'ArrowLeft':
-				case 'KeyA': this.moveLeft = false; break;
-
-				case 'ArrowDown':
-				case 'KeyS': this.moveBackward = false; break;
-
-				case 'ArrowRight':
-				case 'KeyD': this.moveRight = false; break;
-
-				case 'KeyR': this.moveUp = false; break;
-				case 'KeyF': this.moveDown = false; break;
-
-			}
-
-		};
-
-		this.lookAt = function ( x, y, z ) {
-
-			if ( x.isVector3 ) {
-
-				_target.copy( x );
-
-			} else {
-
-				_target.set( x, y, z );
-
-			}
-
-			this.object.lookAt( _target );
-
-			setOrientation( this );
-
-			return this;
-
-		};
-
-		this.update = function () {
-
-			const targetPosition = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
-
-			return function update( delta ) {
-
-				if ( this.enabled === false ) return;
-
-				if ( this.heightSpeed ) {
-
-					const y = three__WEBPACK_IMPORTED_MODULE_0__.MathUtils.clamp( this.object.position.y, this.heightMin, this.heightMax );
-					const heightDelta = y - this.heightMin;
-
-					this.autoSpeedFactor = delta * ( heightDelta * this.heightCoef );
-
-				} else {
-
-					this.autoSpeedFactor = 0.0;
-
-				}
-
-				const actualMoveSpeed = delta * this.movementSpeed;
-
-				if ( this.moveForward || ( this.autoForward && ! this.moveBackward ) ) this.object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
-				if ( this.moveBackward ) this.object.translateZ( actualMoveSpeed );
-
-				if ( this.moveLeft ) this.object.translateX( - actualMoveSpeed );
-				if ( this.moveRight ) this.object.translateX( actualMoveSpeed );
-
-				if ( this.moveUp ) this.object.translateY( actualMoveSpeed );
-				if ( this.moveDown ) this.object.translateY( - actualMoveSpeed );
-
-				let actualLookSpeed = delta * this.lookSpeed;
-
-				if ( ! this.activeLook ) {
-
-					actualLookSpeed = 0;
-
-				}
-
-				let verticalLookRatio = 1;
-
-				if ( this.constrainVertical ) {
-
-					verticalLookRatio = Math.PI / ( this.verticalMax - this.verticalMin );
-
-				}
-
-				lon -= this.mouseX * actualLookSpeed;
-				if ( this.lookVertical ) lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
-
-				lat = Math.max( - 85, Math.min( 85, lat ) );
-
-				let phi = three__WEBPACK_IMPORTED_MODULE_0__.MathUtils.degToRad( 90 - lat );
-				const theta = three__WEBPACK_IMPORTED_MODULE_0__.MathUtils.degToRad( lon );
-
-				if ( this.constrainVertical ) {
-
-					phi = three__WEBPACK_IMPORTED_MODULE_0__.MathUtils.mapLinear( phi, 0, Math.PI, this.verticalMin, this.verticalMax );
-
-				}
-
-				const position = this.object.position;
-
-				targetPosition.setFromSphericalCoords( 1, phi, theta ).add( position );
-
-				this.object.lookAt( targetPosition );
-
-			};
-
-		}();
-
-		this.dispose = function () {
-
-			this.domElement.removeEventListener( 'contextmenu', contextmenu );
-			this.domElement.removeEventListener( 'mousedown', _onMouseDown );
-			this.domElement.removeEventListener( 'mousemove', _onMouseMove );
-			this.domElement.removeEventListener( 'mouseup', _onMouseUp );
-
-			window.removeEventListener( 'keydown', _onKeyDown );
-			window.removeEventListener( 'keyup', _onKeyUp );
-
-		};
-
-		const _onMouseMove = this.onMouseMove.bind( this );
-		const _onMouseDown = this.onMouseDown.bind( this );
-		const _onMouseUp = this.onMouseUp.bind( this );
-		const _onKeyDown = this.onKeyDown.bind( this );
-		const _onKeyUp = this.onKeyUp.bind( this );
-
-		this.domElement.addEventListener( 'contextmenu', contextmenu );
-		this.domElement.addEventListener( 'mousemove', _onMouseMove );
-		this.domElement.addEventListener( 'mousedown', _onMouseDown );
-		this.domElement.addEventListener( 'mouseup', _onMouseUp );
-
-		window.addEventListener( 'keydown', _onKeyDown );
-		window.addEventListener( 'keyup', _onKeyUp );
-
-		function setOrientation( controls ) {
-
-			const quaternion = controls.object.quaternion;
-
-			_lookDirection.set( 0, 0, - 1 ).applyQuaternion( quaternion );
-			_spherical.setFromVector3( _lookDirection );
-
-			lat = 90 - three__WEBPACK_IMPORTED_MODULE_0__.MathUtils.radToDeg( _spherical.phi );
-			lon = three__WEBPACK_IMPORTED_MODULE_0__.MathUtils.radToDeg( _spherical.theta );
-
-		}
-
-		this.handleResize();
-
-		setOrientation( this );
-
-	}
-
-}
-
-function contextmenu( event ) {
-
-	event.preventDefault();
-
-}
-
-
-
-
-/***/ }),
-
 /***/ "./node_modules/three/examples/jsm/controls/OrbitControls.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/three/examples/jsm/controls/OrbitControls.js ***!
@@ -92079,19 +91773,14 @@ const OrbitControls_js_1 = __webpack_require__(/*! three/examples/jsm/controls/O
 const VRButton_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/VRButton.js */ "./node_modules/three/examples/jsm/webxr/VRButton.js");
 const XRControllerModelFactory_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/XRControllerModelFactory.js */ "./node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js");
 const XRHandModelFactory_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/XRHandModelFactory.js */ "./node_modules/three/examples/jsm/webxr/XRHandModelFactory.js");
-const City_1 = __webpack_require__(/*! ./City */ "./src/City.ts");
-const Stats = __webpack_require__(/*! stats.js */ "./node_modules/stats.js/build/stats.min.js");
-const FirstPersonControls_1 = __webpack_require__(/*! three/examples/jsm/controls/FirstPersonControls */ "./node_modules/three/examples/jsm/controls/FirstPersonControls.js");
 const FontLoader_1 = __webpack_require__(/*! three/examples/jsm/loaders/FontLoader */ "./node_modules/three/examples/jsm/loaders/FontLoader.js");
-let container;
-let camera, scene, renderer;
+const City_1 = __webpack_require__(/*! ./City */ "./src/City.ts");
+const App_1 = __webpack_require__(/*! ./App */ "./src/App.ts");
 let hand1, hand2;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
-let stats;
 const tmpVector1 = new THREE.Vector3();
 const tmpVector2 = new THREE.Vector3();
-let controls;
 let grabbing = false;
 const scaling = {
     active: false,
@@ -92102,103 +91791,82 @@ const scaling = {
 const spheres = [];
 init();
 animate();
-function createFirstPersonCtrl() {
-    let camControls;
-    camControls = new FirstPersonControls_1.FirstPersonControls(camera);
-    camControls.lookSpeed = 0.02;
-    camControls.movementSpeed = 3;
-    camControls.noFly = true;
-    camControls.lookVertical = true;
-    camControls.constrainVertical = false;
-    camControls.maxPolarAngle = Math.PI / 2;
-    return camControls;
-}
 function init() {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x444444);
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(1000, 1000, 1000);
-    controls = new OrbitControls_js_1.OrbitControls(camera, container);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
-    controls.enableZoom = true;
-    controls.target.set(0, 0, 0);
-    controls.update();
-    const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
+    App_1.App.container = document.createElement('div');
+    document.body.appendChild(App_1.App.container);
+    App_1.App.scene = new THREE.Scene();
+    App_1.App.scene.background = new THREE.Color(0x444444);
+    App_1.App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+    App_1.App.camera.position.set(App_1.App.width, App_1.App.width, App_1.App.height);
+    App_1.App.controls = new OrbitControls_js_1.OrbitControls(App_1.App.camera, App_1.App.container);
+    App_1.App.controls.enableDamping = true;
+    App_1.App.controls.dampingFactor = 0.25;
+    App_1.App.controls.enableZoom = true;
+    App_1.App.controls.target.set(0, 0, 0);
+    App_1.App.controls.update();
+    const floorGeometry = new THREE.PlaneGeometry(App_1.App.width, App_1.App.height);
     const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
-    scene.add(floor);
+    App_1.App.scene.add(floor);
     const loader = new FontLoader_1.FontLoader();
     loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
-        (0, City_1.createCity)(font, scene).then(() => {
+        (0, City_1.createCity)(font, App_1.App.scene).then(() => {
         });
     });
-    scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
+    App_1.App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
     const light = new THREE.DirectionalLight(0xffffff, 0.8);
-    light.position.set(10, 10, 10);
+    light.position.set(App_1.App.width, App_1.App.height, -App_1.App.width);
     light.castShadow = true;
     light.shadow.mapSize.set(4096, 4096);
-    scene.add(light);
+    App_1.App.scene.add(light);
     const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
-    spotLightReverse.position.set(-10, 10, -10);
+    spotLightReverse.position.set(-App_1.App.width, App_1.App.height, -App_1.App.width);
     spotLightReverse.castShadow = true;
-    scene.add(spotLightReverse);
-    //
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.shadowMap.enabled = true;
-    renderer.xr.enabled = true;
-    container.appendChild(renderer.domElement);
-    document.body.appendChild(VRButton_js_1.VRButton.createButton(renderer));
+    App_1.App.scene.add(spotLightReverse);
+    App_1.App.createRender();
+    document.body.appendChild(VRButton_js_1.VRButton.createButton(App_1.App.renderer));
     // controllers
-    controller1 = renderer.xr.getController(0);
-    scene.add(controller1);
-    controller2 = renderer.xr.getController(1);
-    scene.add(controller2);
+    controller1 = App_1.App.renderer.xr.getController(0);
+    App_1.App.scene.add(controller1);
+    controller2 = App_1.App.renderer.xr.getController(1);
+    App_1.App.scene.add(controller2);
     const controllerModelFactory = new XRControllerModelFactory_js_1.XRControllerModelFactory();
     const handModelFactory = new XRHandModelFactory_js_1.XRHandModelFactory();
     // Hand 1
-    controllerGrip1 = renderer.xr.getControllerGrip(0);
+    controllerGrip1 = App_1.App.renderer.xr.getControllerGrip(0);
     controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
-    scene.add(controllerGrip1);
-    hand1 = renderer.xr.getHand(0);
+    App_1.App.scene.add(controllerGrip1);
+    hand1 = App_1.App.renderer.xr.getHand(0);
     hand1.addEventListener('pinchstart', onPinchStartLeft);
     hand1.addEventListener('pinchend', () => {
         scaling.active = false;
     });
     hand1.add(handModelFactory.createHandModel(hand1));
-    scene.add(hand1);
+    App_1.App.scene.add(hand1);
     // Hand 2
-    controllerGrip2 = renderer.xr.getControllerGrip(1);
+    controllerGrip2 = App_1.App.renderer.xr.getControllerGrip(1);
     controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
-    scene.add(controllerGrip2);
-    hand2 = renderer.xr.getHand(1);
+    App_1.App.scene.add(controllerGrip2);
+    hand2 = App_1.App.renderer.xr.getHand(1);
     hand2.addEventListener('pinchstart', onPinchStartRight);
     hand2.addEventListener('pinchend', onPinchEndRight);
     hand2.add(handModelFactory.createHandModel(hand2));
-    scene.add(hand2);
+    App_1.App.scene.add(hand2);
     const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
     const line = new THREE.Line(geometry);
     line.name = 'line';
     line.scale.z = 5;
     controller1.add(line.clone());
     controller2.add(line.clone());
-    stats = new Stats();
-    stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-    // createFirstPersonCtrl();
-    document.body.appendChild(stats.dom);
+    App_1.App.createStats();
     window.addEventListener('resize', onWindowResize);
 }
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    App_1.App.camera.aspect = window.innerWidth / window.innerHeight;
+    App_1.App.camera.updateProjectionMatrix();
+    App_1.App.renderer.setSize(window.innerWidth, window.innerHeight);
 }
 const SphereRadius = 0.05;
 function onPinchStartLeft(event) {
@@ -92230,7 +91898,7 @@ function onPinchStartLeft(event) {
     spawn.position.copy(indexTip.position);
     spawn.quaternion.copy(indexTip.quaternion);
     spheres.push(spawn);
-    scene.add(spawn);
+    App_1.App.scene.add(spawn);
 }
 function collideObject(indexTip) {
     for (let i = 0; i < spheres.length; i++) {
@@ -92258,19 +91926,15 @@ function onPinchEndRight(event) {
     if (controller.userData.selected !== undefined) {
         const object = controller.userData.selected;
         object.material.emissive.b = 0;
-        scene.attach(object);
+        App_1.App.scene.attach(object);
         controller.userData.selected = undefined;
         grabbing = false;
     }
     scaling.active = false;
 }
-//
 function animate() {
-    renderer.setAnimationLoop(render);
+    App_1.App.renderer.setAnimationLoop(render);
 }
-//
-// const raycaster = new THREE.Raycaster();
-// const mouse = new THREE.Vector2();
 function render() {
     if (scaling.active) {
         const indexTip1Pos = hand1.joints['index-finger-tip'].position;
@@ -92279,8 +91943,8 @@ function render() {
         const newScale = scaling.initialScale + distance / scaling.initialDistance - 1;
         scaling.object.scale.setScalar(newScale);
     }
-    renderer.render(scene, camera);
-    stats.update();
+    App_1.App.renderer.render(App_1.App.scene, App_1.App.camera);
+    App_1.App.stats.update();
 }
 
 })();
