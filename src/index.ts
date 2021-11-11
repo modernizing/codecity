@@ -6,7 +6,7 @@ import {XRHandModelFactory} from 'three/examples/jsm/webxr/XRHandModelFactory.js
 import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
 
 import {createCity} from "./City";
-import {App, createControls} from "./App";
+import {App} from "./App";
 
 let hand1, hand2;
 let controller1, controller2;
@@ -126,6 +126,8 @@ function init() {
   App.createStats();
 
   window.addEventListener('resize', onWindowResize);
+  // App.container.addEventListener("mousemove", trackMouse, false);
+  // App.container.addEventListener("dblclick", zoom, false);
 }
 
 
