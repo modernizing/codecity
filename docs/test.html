@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Quantize scale</title>
+</head>
+
+<style>
+  body {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 14px;
+    color: #333;
+  }
+</style>
+
+<body>
+<svg width="700" height="40">
+  <g id="wrapper" transform="translate(40,10)">
+  </g>
+</svg>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+<script>
+  var linearScale = d3.scaleLinear()
+    .domain([0, 100])
+    .range([0, 600]);
+
+  var quantizeScale = d3.scaleQuantize()
+    .domain([0, 100])
+    .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+
+  var myData = d3.range(0, 100, 1);
+
+  var colors = d3.scaleLinear()
+    .domain([0, 50])
+    .range([0, 600]);
+
+  console.log(colors(20));
+  console.log(linearScale(20));
+  console.log(quantizeScale(10));
+
+  d3.select('#wrapper')
+    .selectAll('rect')
+    .data(myData)
+    .enter()
+    .append('rect')
+    .attr('x', function(d) {
+      return linearScale(d);
+    })
+    .attr('width', 5)
+    .attr('height', 30)
+    .style('fill', function(d) {
+      return quantizeScale(d);
+    });
+
+</script>
+</body>
+</html>

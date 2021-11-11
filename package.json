@@ -31,7 +31,9 @@
     "webpack-dev-server": "latest"
   },
   "dependencies": {
+    "@types/d3": "^7.1.0",
     "cannon": "^0.6.2",
+    "d3": "^7.1.1",
     "stats.js": "^0.17.0",
     "three": "latest"
   }

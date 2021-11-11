@@ -8,15 +8,14 @@ import {XRHandModelFactory} from 'three/examples/jsm/webxr/XRHandModelFactory.js
 import {createCity} from "./City";
 import * as Stats from "stats.js";
 import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
-import {BoxHelper} from "three";
+import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
 
 let container;
-let camera, scene, renderer, camControls;
+let camera, scene, renderer;
 let hand1, hand2;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 let stats;
-let sphere: any = {};
 
 const tmpVector1 = new THREE.Vector3();
 const tmpVector2 = new THREE.Vector3();
@@ -59,7 +58,10 @@ function init() {
   camera.position.set(-8, 8, 8);
 
   controls = new OrbitControls(camera, container);
-  controls.target.set(0, 1.6, 0);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
+  controls.enableZoom = true;
+  controls.target.set(0, 0, 0);
   controls.update();
 
   const floorGeometry = new THREE.PlaneGeometry(10, 10);
@@ -69,7 +71,12 @@ function init() {
   floor.receiveShadow = true;
   scene.add(floor);
 
-  scene.add(createCity());
+  const loader = new FontLoader();
+  loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
+    createCity(font).then((city) => {
+      scene.add(city);
+    })
+  });
 
   scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
@@ -245,6 +252,10 @@ function onPinchEndRight(event) {
 function animate() {
   renderer.setAnimationLoop(render);
 }
+
+//
+// const raycaster = new THREE.Raycaster();
+// const mouse = new THREE.Vector2();
 
 function render() {
   if (scaling.active) {

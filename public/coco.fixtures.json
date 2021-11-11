@@ -1,0 +1,117 @@
+[
+  {
+    "language": "Java",
+    "blanks": 135,
+    "code": 564,
+    "comments": 723,
+    "reports": [
+      {
+        "blanks": 2,
+        "code": 4,
+        "comments": 19,
+        "file_name": "SubscriberExceptionHandler.java",
+        "path": "guava/SubscriberExceptionHandler.java"
+      },
+      {
+        "blanks": 3,
+        "code": 10,
+        "comments": 22,
+        "file_name": "AllowConcurrentEvents.java",
+        "path": "guava/AllowConcurrentEvents.java"
+      },
+      {
+        "blanks": 3,
+        "code": 10,
+        "comments": 27,
+        "file_name": "Subscribe.java",
+        "path": "guava/Subscribe.java"
+      },
+      {
+        "blanks": 9,
+        "code": 28,
+        "comments": 32,
+        "file_name": "SubscriberExceptionContext.java",
+        "path": "guava/SubscriberExceptionContext.java"
+      },
+      {
+        "blanks": 9,
+        "code": 23,
+        "comments": 40,
+        "file_name": "DeadEvent.java",
+        "path": "guava/DeadEvent.java"
+      },
+      {
+        "blanks": 6,
+        "code": 15,
+        "comments": 43,
+        "file_name": "AsyncEventBus.java",
+        "path": "guava/AsyncEventBus.java"
+      },
+      {
+        "blanks": 20,
+        "code": 84,
+        "comments": 44,
+        "file_name": "Subscriber.java",
+        "path": "guava/Subscriber.java"
+      },
+      {
+        "blanks": 34,
+        "code": 181,
+        "comments": 54,
+        "file_name": "SubscriberRegistry.java",
+        "path": "guava/SubscriberRegistry.java"
+      },
+      {
+        "blanks": 25,
+        "code": 96,
+        "comments": 69,
+        "file_name": "Dispatcher.java",
+        "path": "guava/Dispatcher.java"
+      },
+      {
+        "blanks": 22,
+        "code": 108,
+        "comments": 123,
+        "file_name": "EventBus.java",
+        "path": "guava/EventBus.java"
+      },
+      {
+        "blanks": 2,
+        "code": 5,
+        "comments": 250,
+        "file_name": "package-info.java",
+        "path": "guava/package-info.java"
+      }
+    ]
+  },
+  {
+    "language": "Markdown",
+    "blanks": 1,
+    "code": 0,
+    "comments": 4,
+    "reports": [
+      {
+        "blanks": 1,
+        "code": 0,
+        "comments": 4,
+        "file_name": "README.md",
+        "path": "README.md"
+      }
+    ]
+  },
+  {
+    "language": "Rust",
+    "blanks": 0,
+    "code": 0,
+    "comments": 0,
+    "reports": [
+      {
+        "blanks": 0,
+        "code": 0,
+        "comments": 0,
+        "file_name": "main.rs",
+        "path": "src/main.rs"
+      }
+    ]
+  }
+]

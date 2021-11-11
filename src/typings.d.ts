@@ -34,4 +34,18 @@ interface LanguageLocData {
   bytes: number,
 }
 
+interface ClocSummary {
+  language: String,
+  blanks: String,
+  code: String,
+  comments: String,
+  reports: ClocDetail[],
+}
 
+interface ClocDetail {
+  blanks: number,
+  code: number,
+  comments: number,
+  file_name: String,
+  path: String,
+}
