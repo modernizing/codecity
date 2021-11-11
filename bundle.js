@@ -50805,39 +50805,13 @@ App.height = 1000;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createCity = exports.createBuildingData = void 0;
+exports.createCity = void 0;
 const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 const d3 = __webpack_require__(/*! d3 */ "./node_modules/d3/src/index.js");
 let CityInfo = {
     maxLines: 0,
     maxChanges: 0,
 };
-function createBuildingData(data) {
-    const rootNode = d3.hierarchy(data);
-    rootNode.descendants().forEach((node) => {
-        node.data.hierarchNode = node;
-    });
-    let maxDepth = 10;
-    const allNodes = rootNode
-        .descendants()
-        .map((d) => {
-        var _a, _b, _c, _d, _e;
-        d.changes = (_c = (_b = (_a = d.data.data) === null || _a === void 0 ? void 0 : _a.git) === null || _b === void 0 ? void 0 : _b.details) === null || _c === void 0 ? void 0 : _c.length;
-        d.lines = (_e = (_d = d.data.data) === null || _d === void 0 ? void 0 : _d.loc) === null || _e === void 0 ? void 0 : _e.code;
-        d.name = d.data.name;
-        if (CityInfo.maxLines < d.lines) {
-            CityInfo.maxLines = d.lines;
-        }
-        if (CityInfo.maxChanges < d.changes) {
-            CityInfo.maxChanges = d.changes;
-        }
-        return d;
-    })
-        .filter((d) => d.depth <= maxDepth)
-        .filter((d) => d.children === undefined || d.depth === maxDepth);
-    return allNodes;
-}
-exports.createBuildingData = createBuildingData;
 function treemap(data) {
     let root = d3.treemap()
         .size([1000, 1000])
