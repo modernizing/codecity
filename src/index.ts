@@ -54,8 +54,8 @@ function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x444444);
 
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(-8, 8, 8);
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+  camera.position.set(1000, 1000, 1000);
 
   controls = new OrbitControls(camera, container);
   controls.enableDamping = true;
@@ -64,7 +64,7 @@ function init() {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  const floorGeometry = new THREE.PlaneGeometry(10, 10);
+  const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
   const floorMaterial = new THREE.MeshStandardMaterial({color: 0x222222});
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
@@ -73,8 +73,8 @@ function init() {
 
   const loader = new FontLoader();
   loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
-    createCity(font).then((city) => {
-      scene.add(city);
+    createCity(font, scene).then(() => {
+
     })
   });
 
