@@ -50769,6 +50769,7 @@ if ( typeof window !== 'undefined' ) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.App = void 0;
 const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+const OrbitControls_1 = __webpack_require__(/*! three/examples/jsm/controls/OrbitControls */ "./node_modules/three/examples/jsm/controls/OrbitControls.js");
 const Stats = __webpack_require__(/*! stats.js */ "./node_modules/stats.js/build/stats.min.js");
 class App {
     constructor() {
@@ -50787,6 +50788,14 @@ class App {
         App.stats = new Stats();
         App.stats.showPanel(0);
         document.body.appendChild(App.stats.dom);
+    }
+    static createControls() {
+        App.controls = new OrbitControls_1.OrbitControls(App.camera, App.container);
+        App.controls.enableDamping = true;
+        App.controls.dampingFactor = 0.25;
+        App.controls.enableZoom = true;
+        App.controls.target.set(0, 0, 0);
+        App.controls.update();
     }
 }
 exports.App = App;
@@ -91743,7 +91752,6 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ../style.css */ "./style.css");
 const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-const OrbitControls_js_1 = __webpack_require__(/*! three/examples/jsm/controls/OrbitControls.js */ "./node_modules/three/examples/jsm/controls/OrbitControls.js");
 const VRButton_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/VRButton.js */ "./node_modules/three/examples/jsm/webxr/VRButton.js");
 const XRControllerModelFactory_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/XRControllerModelFactory.js */ "./node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js");
 const XRHandModelFactory_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/XRHandModelFactory.js */ "./node_modules/three/examples/jsm/webxr/XRHandModelFactory.js");
@@ -91765,42 +91773,7 @@ const scaling = {
 const spheres = [];
 init();
 animate();
-function init() {
-    App_1.App.container = document.createElement('div');
-    document.body.appendChild(App_1.App.container);
-    App_1.App.scene = new THREE.Scene();
-    App_1.App.scene.background = new THREE.Color(0x444444);
-    App_1.App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-    App_1.App.camera.position.set(App_1.App.width, App_1.App.width, App_1.App.height);
-    App_1.App.controls = new OrbitControls_js_1.OrbitControls(App_1.App.camera, App_1.App.container);
-    App_1.App.controls.enableDamping = true;
-    App_1.App.controls.dampingFactor = 0.25;
-    App_1.App.controls.enableZoom = true;
-    App_1.App.controls.target.set(0, 0, 0);
-    App_1.App.controls.update();
-    const floorGeometry = new THREE.PlaneGeometry(App_1.App.width, App_1.App.height);
-    const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    floor.receiveShadow = true;
-    App_1.App.scene.add(floor);
-    const loader = new FontLoader_1.FontLoader();
-    loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
-        (0, City_1.createCity)(font, App_1.App.scene).then(() => {
-        });
-    });
-    App_1.App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
-    const light = new THREE.DirectionalLight(0xffffff, 0.8);
-    light.position.set(App_1.App.width, App_1.App.height, -App_1.App.width);
-    light.castShadow = true;
-    light.shadow.mapSize.set(4096, 4096);
-    App_1.App.scene.add(light);
-    const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
-    spotLightReverse.position.set(-App_1.App.width, App_1.App.height, -App_1.App.width);
-    spotLightReverse.castShadow = true;
-    App_1.App.scene.add(spotLightReverse);
-    App_1.App.createRender();
-    document.body.appendChild(VRButton_js_1.VRButton.createButton(App_1.App.renderer));
+function createrControllers() {
     // controllers
     controller1 = App_1.App.renderer.xr.getController(0);
     App_1.App.scene.add(controller1);
@@ -91834,8 +91807,46 @@ function init() {
     line.scale.z = 5;
     controller1.add(line.clone());
     controller2.add(line.clone());
+}
+function createLights() {
+    const light = new THREE.DirectionalLight(0xffffff, 0.8);
+    light.position.set(App_1.App.width, App_1.App.height, -App_1.App.width);
+    light.castShadow = true;
+    light.shadow.mapSize.set(4096, 4096);
+    App_1.App.scene.add(light);
+    const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
+    spotLightReverse.position.set(-App_1.App.width, App_1.App.height, -App_1.App.width);
+    spotLightReverse.castShadow = true;
+    App_1.App.scene.add(spotLightReverse);
+}
+function init() {
+    App_1.App.container = document.createElement('div');
+    document.body.appendChild(App_1.App.container);
+    App_1.App.scene = new THREE.Scene();
+    App_1.App.scene.background = new THREE.Color(0x444444);
+    App_1.App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+    App_1.App.camera.position.set(App_1.App.width, App_1.App.height, App_1.App.height);
+    App_1.App.createControls();
+    const floorGeometry = new THREE.PlaneGeometry(App_1.App.width, App_1.App.height);
+    const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    App_1.App.scene.add(floor);
+    const loader = new FontLoader_1.FontLoader();
+    loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
+        (0, City_1.createCity)(font, App_1.App.scene).then(() => {
+        });
+    });
+    App_1.App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
+    createLights();
+    App_1.App.createRender();
+    document.body.appendChild(VRButton_js_1.VRButton.createButton(App_1.App.renderer));
+    createrControllers();
     App_1.App.createStats();
     window.addEventListener('resize', onWindowResize);
+    // App.container.addEventListener("mousemove", trackMouse, false);
+    // App.container.addEventListener("dblclick", zoom, false);
 }
 function onWindowResize() {
     App_1.App.camera.aspect = window.innerWidth / window.innerHeight;
