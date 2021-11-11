@@ -50770,7 +50770,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createCity = exports.createBuildingData = void 0;
 const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 const d3 = __webpack_require__(/*! d3 */ "./node_modules/d3/src/index.js");
-const TextGeometry_1 = __webpack_require__(/*! three/examples/jsm/geometries/TextGeometry */ "./node_modules/three/examples/jsm/geometries/TextGeometry.js");
 let CityInfo = {
     maxLines: 0,
     maxChanges: 0,
@@ -50826,21 +50825,8 @@ function treemap(data) {
 function loadData() {
     return d3.json("data.json");
 }
-function displayText(building, font, color, x, height, y) {
-    const textGeo = new TextGeometry_1.TextGeometry(building.name, {
-        font: font,
-        size: 0.01,
-        height: 0.01,
-        curveSegments: 0.1,
-    });
-    let textMaterial = new THREE.MeshPhongMaterial({ color: color });
-    let mesh = new THREE.Mesh(textGeo, textMaterial);
-    mesh.position.set(x, height * 1.1, y);
-    return mesh;
-}
 function addCuboid(w, h, d, x, y, z, color, scene, pool, node) {
     const cuboid = new THREE.Mesh(pool.geometry, pool.materials[color]);
-    console.log(y, node.data.changes);
     cuboid.position.set(x + w / 2 - 500, y, z + d / 2 - 500);
     cuboid.scale.set(w, h, d);
     const frame = new THREE.LineSegments(pool.edgeGeometry, pool.lineMaterials[color]);
@@ -86246,76 +86232,6 @@ class MapControls extends OrbitControls {
 	}
 
 }
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/three/examples/jsm/geometries/TextGeometry.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/three/examples/jsm/geometries/TextGeometry.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextGeometry": () => (/* binding */ TextGeometry)
-/* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/**
- * Text = 3D Text
- *
- * parameters = {
- *  font: <THREE.Font>, // font
- *
- *  size: <float>, // size of the text
- *  height: <float>, // thickness to extrude text
- *  curveSegments: <int>, // number of points on the curves
- *
- *  bevelEnabled: <bool>, // turn on bevel
- *  bevelThickness: <float>, // how deep into text bevel goes
- *  bevelSize: <float>, // how far from text outline (including bevelOffset) is bevel
- *  bevelOffset: <float> // how far from text outline does bevel start
- * }
- */
-
-
-
-class TextGeometry extends three__WEBPACK_IMPORTED_MODULE_0__.ExtrudeGeometry {
-
-	constructor( text, parameters = {} ) {
-
-		const font = parameters.font;
-
-		if ( ! ( font && font.isFont ) ) {
-
-			console.error( 'THREE.TextGeometry: font parameter is not an instance of THREE.Font.' );
-			return new three__WEBPACK_IMPORTED_MODULE_0__.BufferGeometry();
-
-		}
-
-		const shapes = font.generateShapes( text, parameters.size );
-
-		// translate parameters to ExtrudeGeometry API
-
-		parameters.depth = parameters.height !== undefined ? parameters.height : 50;
-
-		// defaults
-
-		if ( parameters.bevelThickness === undefined ) parameters.bevelThickness = 10;
-		if ( parameters.bevelSize === undefined ) parameters.bevelSize = 8;
-		if ( parameters.bevelEnabled === undefined ) parameters.bevelEnabled = false;
-
-		super( shapes, parameters );
-
-		this.type = 'TextGeometry';
-
-	}
-
-}
-
 
 
 
