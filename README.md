@@ -1,6 +1,8 @@
-# Code city
+# Codecity
 
-> code city is a code explorer for fun. 
+> codecity is a code explorer in metaverase for fun. 
+
+Codecity 是一个用于在元宇宙中进行遗留系统分析的工具。
 
 - [x] render city with Three.js
 - [x] code render
