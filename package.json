@@ -21,6 +21,7 @@
   "homepage": "https://github.com/phodal/codexity#readme",
   "devDependencies": {
     "@types/three": "^0.134.0",
+    "copy-webpack-plugin": "^9.0.1",
     "css-loader": "latest",
     "html-webpack-plugin": "latest",
     "progress-bar-webpack-plugin": "latest",

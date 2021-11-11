@@ -2,6 +2,7 @@ const { resolve } = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: 'development',
@@ -48,6 +49,11 @@ module.exports = {
   },
   plugins: [
     new ProgressBarPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: "public", to: "" },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: `${__dirname}/index.html`,
       filename: 'index.html',
