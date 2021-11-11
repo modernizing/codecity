@@ -8,8 +8,9 @@
 - [ ] support for XR
   - [ ] Oculus Quest
   - [ ] others
-
-
+- [ ] code analysis
+  - [ ] show struct
+  - [ ] show callee
 
 ## Document
 
