@@ -50817,9 +50817,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createCity = void 0;
 const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 const d3 = __webpack_require__(/*! d3 */ "./node_modules/d3/src/index.js");
+const App_1 = __webpack_require__(/*! ./App */ "./src/App.ts");
+const TextGeometry_1 = __webpack_require__(/*! three/examples/jsm/geometries/TextGeometry */ "./node_modules/three/examples/jsm/geometries/TextGeometry.js");
 let CityInfo = {
     maxLines: 0,
     maxChanges: 0,
+    pool: undefined
 };
 function treemap(data) {
     let root = d3.treemap()
@@ -50846,11 +50849,11 @@ function treemap(data) {
 function loadData() {
     return d3.json("data.json");
 }
-function addCuboid(w, h, d, x, y, z, color, scene, pool, node) {
-    const cuboid = new THREE.Mesh(pool.geometry, pool.materials[color]);
-    cuboid.position.set(x + w / 2 - 500, y, z + d / 2 - 500);
+function addCuboid(w, h, d, x, y, z, color, scene, node) {
+    const cuboid = new THREE.Mesh(CityInfo.pool.geometry, CityInfo.pool.materials[color]);
+    cuboid.position.set(x + w / 2 - App_1.App.width / 2, y, z + d / 2 - App_1.App.width / 2);
     cuboid.scale.set(w, h, d);
-    const frame = new THREE.LineSegments(pool.edgeGeometry, pool.lineMaterials[color]);
+    const frame = new THREE.LineSegments(CityInfo.pool.edgeGeometry, CityInfo.pool.lineMaterials[color]);
     cuboid.add(frame);
     scene.add(cuboid);
     return cuboid;
@@ -50873,17 +50876,51 @@ function createpool(chartData) {
         textMaterial: new THREE.MeshBasicMaterial({ color: 0x333333 })
     };
 }
-function createCity(font, scene) {
+function createCity(scene) {
     return loadData().then((data) => {
         let buildings = treemap(data);
-        const pool = createpool(buildings);
-        buildings.forEach(layer => layer[1].forEach(node => {
+        CityInfo.pool = createpool(buildings);
+        buildings.forEach(layer => layer[1].forEach((node) => {
             const h = 6, hh = h / 2, w = node.x1 - node.x0, d = node.y1 - node.y0, cl = buildings.length - node.height - 1;
-            const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, scene, pool, node);
+            const format = d3.format(",d"), fontSize = 10, tolerance = 0.6;
+            function estimate(text) {
+                return text.length * fontSize * tolerance;
+            }
+            const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, scene, node);
+            const rx = Math.PI * 1.5;
+            if (node.children) {
+                let label = `${node.data.name} ${format(node.value)}`;
+                if (estimate(label) > w)
+                    label = node.data.name;
+                if (estimate(label) < w)
+                    addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + 12, rx, 0, 0);
+            }
+            else {
+                const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(format(node.value)), max = Math.max(...labels.map(label => label.length * fontSize * tolerance));
+                if (max < w) {
+                    if (labels.length * fontSize > d)
+                        labels.pop();
+                    if (labels.length * fontSize < d) {
+                        labels.forEach((label, i) => {
+                            addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + (i * 12) + 12, rx, 0, 0);
+                        });
+                    }
+                }
+            }
         }));
     });
 }
 exports.createCity = createCity;
+function addText(text, size, h, x, y, z, rx, ry, rz) {
+    const geometry = new TextGeometry_1.TextGeometry(text, { font: App_1.App.font, size, height: h });
+    geometry.computeBoundingSphere();
+    geometry.computeVertexNormals();
+    const mesh = new THREE.Mesh(geometry, CityInfo.pool.textMaterial);
+    mesh.position.set(x - App_1.App.width / 2, y, z - App_1.App.width / 2);
+    mesh.rotation.set(rx, ry, rz);
+    App_1.App.scene.add(mesh);
+    return mesh;
+}
 
 
 /***/ }),
@@ -85915,6 +85952,76 @@ class MapControls extends OrbitControls {
 
 /***/ }),
 
+/***/ "./node_modules/three/examples/jsm/geometries/TextGeometry.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/three/examples/jsm/geometries/TextGeometry.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TextGeometry": () => (/* binding */ TextGeometry)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/**
+ * Text = 3D Text
+ *
+ * parameters = {
+ *  font: <THREE.Font>, // font
+ *
+ *  size: <float>, // size of the text
+ *  height: <float>, // thickness to extrude text
+ *  curveSegments: <int>, // number of points on the curves
+ *
+ *  bevelEnabled: <bool>, // turn on bevel
+ *  bevelThickness: <float>, // how deep into text bevel goes
+ *  bevelSize: <float>, // how far from text outline (including bevelOffset) is bevel
+ *  bevelOffset: <float> // how far from text outline does bevel start
+ * }
+ */
+
+
+
+class TextGeometry extends three__WEBPACK_IMPORTED_MODULE_0__.ExtrudeGeometry {
+
+	constructor( text, parameters = {} ) {
+
+		const font = parameters.font;
+
+		if ( ! ( font && font.isFont ) ) {
+
+			console.error( 'THREE.TextGeometry: font parameter is not an instance of THREE.Font.' );
+			return new three__WEBPACK_IMPORTED_MODULE_0__.BufferGeometry();
+
+		}
+
+		const shapes = font.generateShapes( text, parameters.size );
+
+		// translate parameters to ExtrudeGeometry API
+
+		parameters.depth = parameters.height !== undefined ? parameters.height : 50;
+
+		// defaults
+
+		if ( parameters.bevelThickness === undefined ) parameters.bevelThickness = 10;
+		if ( parameters.bevelSize === undefined ) parameters.bevelSize = 8;
+		if ( parameters.bevelEnabled === undefined ) parameters.bevelEnabled = false;
+
+		super( shapes, parameters );
+
+		this.type = 'TextGeometry';
+
+	}
+
+}
+
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/three/examples/jsm/libs/motion-controllers.module.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/three/examples/jsm/libs/motion-controllers.module.js ***!
@@ -91835,7 +91942,8 @@ function init() {
     App_1.App.scene.add(floor);
     const loader = new FontLoader_1.FontLoader();
     loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
-        (0, City_1.createCity)(font, App_1.App.scene).then(() => {
+        App_1.App.font = font;
+        (0, City_1.createCity)(App_1.App.scene).then(() => {
         });
     });
     App_1.App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
