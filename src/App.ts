@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {PerspectiveCamera, Scene, WebGLRenderer} from 'three';
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import * as Stats from "stats.js";
+import {Font} from "three/examples/jsm/loaders/FontLoader";
 
 export class App {
   isDebug: boolean
@@ -13,6 +14,7 @@ export class App {
   static width = 1000;
   static height = 1000;
   static renderer: WebGLRenderer;
+  static font: Font;
 
   constructor() {
 

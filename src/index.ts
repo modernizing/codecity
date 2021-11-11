@@ -108,7 +108,8 @@ function init() {
 
   const loader = new FontLoader();
   loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
-    createCity(font, App.scene).then(() => {
+    App.font = font;
+    createCity(App.scene).then(() => {
 
     })
   });
