@@ -119,14 +119,7 @@ function createpool(chartData) {
 
 export function createCity(font: Font, scene: Scene) {
   return loadData().then((data) => {
-    // let buildingData = createBuildingData(data);
     let buildings = treemap(data);
-
-    // const colors = d3.scaleQuantize()
-    //   .domain([0, CityInfo.maxChanges])
-    //   .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
-    //     "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"] as any);
-    //
 
     const pool = createpool(buildings);
 
@@ -137,38 +130,7 @@ export function createCity(font: Font, scene: Scene) {
         cl = buildings.length - node.height - 1;
 
       const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, scene, pool, node);
-      // const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, scene, pool);
-      // cuboid.info = node;
-    }));
 
-    // for (let building of (buildings as any)) {
-    //   let size = building.lines / CityInfo.maxLines;
-    //   if (size === 0) {
-    //     size = 0.1;
-    //   }
-    //
-    //   let height = building.changes / CityInfo.maxChanges;
-    //   const geometry = new THREE.BoxGeometry(size, height, size);
-    //
-    //   let color = colors(building.changes);
-    //   const object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: color}));
-    //
-    //
-    //   let y = (Math.random() * 4 - 2);
-    //   let x = (Math.random() * 4 - 2);
-    //
-    //   object.position.x = x;
-    //   object.position.y = height / 2;
-    //   object.position.z = y;
-    //
-    //   object.castShadow = true
-    //
-    //   city.add(object);
-    //   //
-    //   // let mesh = displayText(building, font, color, x, height, y);
-    //   // city.add(mesh);
-    // }
-
-    // return city;
+    }))
   });
 }
