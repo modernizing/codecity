@@ -11,8 +11,13 @@ export class App {
   static scene: Scene;
   static camera: PerspectiveCamera;
   static controls: OrbitControls;
-  static width = 1000;
-  static height = 1000;
+  // x
+  static height = 600;
+  // z
+  static width = 1800;
+  // y
+  static depth = 1000;
+
   static renderer: WebGLRenderer;
   static font: Font;
 
@@ -47,5 +52,13 @@ export class App {
     App.controls.enableZoom = true;
     App.controls.target.set(0, 0, 0);
     App.controls.update();
+  }
+
+  static debugPoint(x, y, z) {
+    const geometry = new THREE.SphereGeometry( 15, 32, 16 );
+    const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    const sphere = new THREE.Mesh( geometry, material );
+    sphere.position.set(x, y, z);
+    App.scene.add( sphere );
   }
 }

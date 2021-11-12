@@ -1,9 +1,8 @@
 import * as THREE from "three";
-import {Scene} from "three";
 import * as d3 from "d3";
-import {Font} from "three/examples/jsm/loaders/FontLoader";
 import {App} from "./App";
 import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
+import {BoxLineGeometry} from "three/examples/jsm/geometries/BoxLineGeometry";
 
 let CityInfo = {
   maxLines: 0,
@@ -13,7 +12,7 @@ let CityInfo = {
 
 function treemap(data) {
   let root = d3.treemap()
-    .size([1000, 1000])
+    .size([App.width, App.height])
     .paddingOuter(5)
     .paddingInner(5)
     .paddingTop(20)
@@ -41,9 +40,20 @@ function loadData(): Promise<any> {
 }
 
 function addCuboid(w, h, d, x, y, z, color, scene, node) {
-  const cuboid = new THREE.Mesh(CityInfo.pool.geometry, CityInfo.pool.materials[color]);
-  cuboid.position.set(x + w / 2 - App.width / 2, y, z + d / 2 - App.width / 2);
+  let meshBasicMaterial = new THREE.MeshBasicMaterial({
+    color: CityInfo.pool.colors(node.data.changes),
+    opacity: 0.9,
+    transparent: true
+  });
+
+  const geometry = new THREE.BoxBufferGeometry(1, 1 + node.data.changes, 1);
+  // geometry.castShadow = true
+
+  const cuboid = new THREE.Mesh(geometry, meshBasicMaterial);
+  cuboid.position.set(x + w / 2, y, z + d / 2);
   cuboid.scale.set(w, h, d);
+
+
 
   const frame = new THREE.LineSegments(CityInfo.pool.edgeGeometry, CityInfo.pool.lineMaterials[color]);
   cuboid.add(frame);
@@ -57,7 +67,13 @@ function createpool(chartData) {
   const geometry = new THREE.BoxBufferGeometry(1, 1, 1),
     colors = chartData.map(layer => color(layer[0]));
 
+  const change_colors = d3.scaleQuantize()
+    .domain([0, CityInfo.maxChanges])
+    .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+      "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"] as any);
+
   return {
+    colors: change_colors,
     geometry,
     materials: colors.map(color => new THREE.MeshBasicMaterial({
       color,
@@ -74,12 +90,18 @@ function createpool(chartData) {
 
 }
 
-export function createCity(scene: Scene) {
+export function createCity() {
   return loadData().then((data) => {
     let buildings = treemap(data);
 
     CityInfo.pool = createpool(buildings);
 
+    const city = new THREE.LineSegments(
+      new BoxLineGeometry(10, 10, 10, 10, 10, 10).translate(0, 0, 0),
+      new THREE.LineBasicMaterial({color: 0x808080})
+    );
+
+    city.position.set(-App.width / 2, 0, -App.height / 2)
 
     buildings.forEach(layer => layer[1].forEach((node: any) => {
       const h = 6, hh = h / 2,
@@ -94,46 +116,44 @@ export function createCity(scene: Scene) {
         return text.length * fontSize * tolerance;
       }
 
-      const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, scene, node);
+      const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, city, node);
       const rx = Math.PI * 1.5;
 
       if (node.children) {
         let label = `${node.data.name} ${format(node.value)}`;
         if (estimate(label) > w) label = node.data.name;
-        if (estimate(label) < w)
-          addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + 12, rx, 0, 0);
+        if (estimate(label) < w) {
+          let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + 12, rx, 0, 0, node);
+          city.add(mesh);
+        }
       } else {
-        const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(format(node.value)),
+        const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(`${format(node.value)}, ${format(node.data.changes)}`),
           max = Math.max(...labels.map(label => label.length * fontSize * tolerance));
 
         if (max < w) {
           if (labels.length * fontSize > d) labels.pop();
           if (labels.length * fontSize < d) {
             labels.forEach((label, i) => {
-              addText(
-                label, fontSize, 0.3,
-                node.x0 + 2, cl * h + hh, node.y0 + (i * 12) + 12,
-                rx, 0, 0);
+              let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + (i * 12) + 12, rx, 0, 0, node);
+              city.add(mesh);
             });
           }
         }
       }
-
-
     }))
+
+    App.scene.add(city)
   });
 }
 
-function addText(text, size, h, x, y, z, rx, ry, rz) {
-  const geometry = new TextGeometry(
-    text,
-    {font: App.font, size, height: h});
+function addText(text, size, h, x, y, z, rx, ry, rz, node) {
+  const geometry = new TextGeometry(text, {font: App.font, size, height: h});
   geometry.computeBoundingSphere();
   geometry.computeVertexNormals();
 
   const mesh = new THREE.Mesh(geometry, CityInfo.pool.textMaterial);
-  mesh.position.set(x - App.width / 2, y, z - App.width / 2);
+  mesh.position.set(x, y + node.data.changes * 2, z);
   mesh.rotation.set(rx, ry, rz);
-  App.scene.add(mesh);
+
   return mesh;
 }

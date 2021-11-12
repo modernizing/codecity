@@ -28,7 +28,7 @@ const spheres = [];
 init();
 animate();
 
-function createrControllers() {
+function createControllers() {
   // controllers
   controller1 = App.renderer.xr.getController(0);
   App.scene.add(controller1);
@@ -75,16 +75,34 @@ function createrControllers() {
 }
 
 function createLights() {
-  const light = new THREE.DirectionalLight(0xffffff, 0.8);
-  light.position.set(App.width, App.height, -App.width);
-  light.castShadow = true;
-  light.shadow.mapSize.set(4096, 4096);
-  App.scene.add(light);
+  // const light = new THREE.DirectionalLight(0xffff00, 0.8);
+  // light.position.set(App.width / 2, App.depth / 2, App.height / 2);
+  // light.castShadow = true;
+  // light.shadow.mapSize.set(4096, 4096);
+  // App.scene.add(light);
+  // App.debugPoint(App.width / 2, App.depth / 2, App.height / 2);
+  //
+  // const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
+  // spotLightReverse.position.set(App.width, App.depth, App.height);
+  // spotLightReverse.castShadow = true;
+  // App.scene.add(spotLightReverse);
 
-  const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
-  spotLightReverse.position.set(-App.width, App.height, -App.width);
-  spotLightReverse.castShadow = true;
-  App.scene.add(spotLightReverse);
+  const dlight = new THREE.SpotLight(0xffffff);
+  dlight.castShadow = true; // default false
+  dlight.position.set(App.width / 2, App.depth / 2, App.height / 2); //default; light shining from top
+  dlight.castShadow = true; // default false
+  App.scene.add(dlight);
+
+//Set up shadow properties for the light
+  dlight.shadow.mapSize.width = 2048; // default
+  dlight.shadow.mapSize.height = 2048; // default
+  dlight.shadow.camera.near = 0.5; // default
+  dlight.shadow.camera.far = 1800; // default
+  dlight.shadow.focus = 1; // default
+
+
+  const helper = new THREE.CameraHelper(dlight.shadow.camera);
+  App.scene.add(helper);
 }
 
 function init() {
@@ -95,40 +113,40 @@ function init() {
   App.scene.background = new THREE.Color(0x444444);
 
   App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-  App.camera.position.set(App.width, App.height, App.height);
+  App.camera.position.set(0, App.depth * 2, App.height);
+
+  const axesHelper = new THREE.AxesHelper(1000);
+  App.scene.add(axesHelper);
 
   App.createControls();
 
-  const floorGeometry = new THREE.PlaneGeometry(App.width, App.height);
+  const floorGeometry = new THREE.PlaneGeometry(App.width * 2, App.height * 2);
   const floorMaterial = new THREE.MeshStandardMaterial({color: 0x222222});
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
+  floor.position.set(0, 0, 0);
   App.scene.add(floor);
 
   const loader = new FontLoader();
   loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
     App.font = font;
-    createCity(App.scene).then(() => {
+    createCity().then(() => {
+      createLights();
 
     })
   });
 
   App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
-  createLights();
-
   App.createRender();
 
   document.body.appendChild(VRButton.createButton(App.renderer));
 
-  createrControllers();
-
+  createControllers();
   App.createStats();
 
   window.addEventListener('resize', onWindowResize);
-  // App.container.addEventListener("mousemove", trackMouse, false);
-  // App.container.addEventListener("dblclick", zoom, false);
 }
 
 
