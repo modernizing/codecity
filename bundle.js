@@ -50812,6 +50812,9 @@ App.height = 600;
 App.width = 1800;
 // y
 App.depth = 1000;
+App.config = {
+    fontSize: 10
+};
 
 
 /***/ }),
@@ -50862,19 +50865,23 @@ function loadData() {
     return d3.json("data.json");
 }
 function addCuboid(w, h, d, x, y, z, color, scene, node) {
+    let color1 = CityInfo.pool.colors(node.data.changes);
     let meshBasicMaterial = new THREE.MeshLambertMaterial({
-        color: CityInfo.pool.colors(node.data.changes),
+        color: color1,
         opacity: 0.9,
         transparent: true
     });
-    const geometry = new THREE.BoxGeometry(1, 1 + node.data.changes, 1);
-    // geometry.castShadow = true
+    const geometry = new THREE.BoxBufferGeometry(w, h + node.data.changes * 2, d);
     const cuboid = new THREE.Mesh(geometry, meshBasicMaterial);
     cuboid.position.set(x + w / 2, y, z + d / 2);
-    cuboid.scale.set(w, h, d);
     cuboid.receiveShadow = true;
     cuboid.castShadow = true;
-    const frame = new THREE.LineSegments(CityInfo.pool.edgeGeometry, CityInfo.pool.lineMaterials[color]);
+    let edgesGeometry = new THREE.EdgesGeometry(geometry);
+    let lineBasicMaterial = new THREE.LineBasicMaterial({
+        color: d3.color(color1).darker(0.5).formatHex(),
+        linewidth: 1
+    });
+    const frame = new THREE.LineSegments(edgesGeometry, lineBasicMaterial);
     cuboid.add(frame);
     scene.add(cuboid);
     return cuboid;
@@ -50910,29 +50917,30 @@ function createCity() {
         city.position.set(-App_1.App.width / 2, 0, -App_1.App.height / 2);
         buildings.forEach(layer => layer[1].forEach((node) => {
             const h = 6, hh = h / 2, w = node.x1 - node.x0, d = node.y1 - node.y0, cl = buildings.length - node.height - 1;
-            const format = d3.format(",d"), fontSize = 10, tolerance = 0.6;
+            const format = d3.format(",d"), tolerance = 0.6;
             function estimate(text) {
-                return text.length * fontSize * tolerance;
+                return text.length * App_1.App.config.fontSize * tolerance;
             }
             const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, city, node);
             const rx = Math.PI * 1.5;
+            let height_offset = node.data.changes > hh ? node.data.changes + hh : hh;
             if (node.children) {
                 let label = `${node.data.name} ${format(node.value)}`;
                 if (estimate(label) > w)
                     label = node.data.name;
                 if (estimate(label) < w) {
-                    let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + 12, rx, 0, 0, node);
+                    let mesh = addText(label, App_1.App.config.fontSize, 0.3, node.x0 + 2, cl * h + height_offset, node.y0 + 12, rx, 0, 0, node);
                     city.add(mesh);
                 }
             }
             else {
-                const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(`${format(node.value)}, ${format(node.data.changes)}`), max = Math.max(...labels.map(label => label.length * fontSize * tolerance));
+                const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(`${format(node.value)}, ${format(node.data.changes)}`), max = Math.max(...labels.map(label => label.length * App_1.App.config.fontSize * tolerance));
                 if (max < w) {
-                    if (labels.length * fontSize > d)
+                    if (labels.length * App_1.App.config.fontSize > d)
                         labels.pop();
-                    if (labels.length * fontSize < d) {
+                    if (labels.length * App_1.App.config.fontSize < d) {
                         labels.forEach((label, i) => {
-                            let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + (i * 12) + 12, rx, 0, 0, node);
+                            let mesh = addText(label, App_1.App.config.fontSize, 0.3, node.x0 + 2, cl * h + height_offset, node.y0 + (i * 12) + 12, rx, 0, 0, node);
                             city.add(mesh);
                         });
                     }
@@ -50948,7 +50956,7 @@ function addText(text, size, h, x, y, z, rx, ry, rz, node) {
     geometry.computeBoundingSphere();
     geometry.computeVertexNormals();
     const mesh = new THREE.Mesh(geometry, CityInfo.pool.textMaterial);
-    mesh.position.set(x, y + node.data.changes * 2, z);
+    mesh.position.set(x, y, z);
     mesh.rotation.set(rx, ry, rz);
     return mesh;
 }
@@ -92052,7 +92060,7 @@ function init() {
     document.body.appendChild(App_1.App.container);
     App_1.App.scene = new THREE.Scene();
     App_1.App.scene.background = new THREE.Color(0x444444);
-    App_1.App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+    App_1.App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100000);
     App_1.App.camera.position.set(0, App_1.App.depth * 2, App_1.App.height);
     const axesHelper = new THREE.AxesHelper(1000);
     App_1.App.scene.add(axesHelper);
@@ -92064,11 +92072,11 @@ function init() {
     floor.receiveShadow = true;
     floor.position.set(0, 0, 0);
     App_1.App.scene.add(floor);
+    createLights();
     const loader = new FontLoader_1.FontLoader();
     loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
         App_1.App.font = font;
         (0, City_1.createCity)().then(() => {
-            createLights();
         });
     });
     App_1.App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
