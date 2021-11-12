@@ -40,22 +40,26 @@ function loadData(): Promise<any> {
 }
 
 function addCuboid(w, h, d, x, y, z, color, scene, node) {
+  let color1 = CityInfo.pool.colors(node.data.changes);
   let meshBasicMaterial = new THREE.MeshLambertMaterial({
-    color: CityInfo.pool.colors(node.data.changes),
+    color: color1,
     opacity: 0.9,
     transparent: true
   });
 
-  const geometry = new THREE.BoxGeometry(1, 1 + node.data.changes, 1);
-  // geometry.castShadow = true
+  const geometry = new THREE.BoxBufferGeometry(w, h + node.data.changes * 2, d);
 
   const cuboid = new THREE.Mesh(geometry, meshBasicMaterial);
   cuboid.position.set(x + w / 2, y, z + d / 2);
-  cuboid.scale.set(w, h, d);
   cuboid.receiveShadow = true;
   cuboid.castShadow = true;
 
-  const frame = new THREE.LineSegments(CityInfo.pool.edgeGeometry, CityInfo.pool.lineMaterials[color]);
+  let edgesGeometry = new THREE.EdgesGeometry(geometry);
+  let lineBasicMaterial = new THREE.LineBasicMaterial({
+    color: d3.color(color1).darker(0.5).formatHex(),
+    linewidth: 1
+  });
+  const frame = new THREE.LineSegments(edgesGeometry, lineBasicMaterial);
   cuboid.add(frame);
 
   scene.add(cuboid);
@@ -109,32 +113,33 @@ export function createCity() {
         d = node.y1 - node.y0,
         cl = buildings.length - node.height - 1;
       const format = d3.format(",d"),
-        fontSize = 10,
         tolerance = 0.6;
 
       function estimate(text) {
-        return text.length * fontSize * tolerance;
+        return text.length * App.config.fontSize * tolerance;
       }
 
       const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, city, node);
       const rx = Math.PI * 1.5;
 
+      let height_offset = node.data.changes > hh ? node.data.changes + hh : hh;
+
       if (node.children) {
         let label = `${node.data.name} ${format(node.value)}`;
         if (estimate(label) > w) label = node.data.name;
         if (estimate(label) < w) {
-          let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + 12, rx, 0, 0, node);
+          let mesh = addText(label, App.config.fontSize, 0.3, node.x0 + 2, cl * h + height_offset, node.y0 + 12, rx, 0, 0, node);
           city.add(mesh);
         }
       } else {
         const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(`${format(node.value)}, ${format(node.data.changes)}`),
-          max = Math.max(...labels.map(label => label.length * fontSize * tolerance));
+          max = Math.max(...labels.map(label => label.length * App.config.fontSize * tolerance));
 
         if (max < w) {
-          if (labels.length * fontSize > d) labels.pop();
-          if (labels.length * fontSize < d) {
+          if (labels.length * App.config.fontSize > d) labels.pop();
+          if (labels.length * App.config.fontSize < d) {
             labels.forEach((label, i) => {
-              let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + (i * 12) + 12, rx, 0, 0, node);
+              let mesh = addText(label, App.config.fontSize, 0.3, node.x0 + 2, cl * h + height_offset, node.y0 + (i * 12) + 12, rx, 0, 0, node);
               city.add(mesh);
             });
           }
@@ -152,7 +157,7 @@ function addText(text, size, h, x, y, z, rx, ry, rz, node) {
   geometry.computeVertexNormals();
 
   const mesh = new THREE.Mesh(geometry, CityInfo.pool.textMaterial);
-  mesh.position.set(x, y + node.data.changes * 2, z);
+  mesh.position.set(x, y, z);
   mesh.rotation.set(rx, ry, rz);
 
   return mesh;

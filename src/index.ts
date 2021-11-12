@@ -7,6 +7,7 @@ import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
 
 import {createCity} from "./City";
 import {App} from "./App";
+import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
 
 let hand1, hand2;
 let controller1, controller2;
@@ -104,7 +105,7 @@ function init() {
   App.scene = new THREE.Scene();
   App.scene.background = new THREE.Color(0x444444);
 
-  App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+  App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100000);
   App.camera.position.set(0, App.depth * 2, App.height);
 
   const axesHelper = new THREE.AxesHelper(1000);
@@ -120,11 +121,12 @@ function init() {
   floor.position.set(0, 0, 0);
   App.scene.add(floor);
 
+  createLights();
+
   const loader = new FontLoader();
   loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
     App.font = font;
     createCity().then(() => {
-      createLights();
 
     })
   });

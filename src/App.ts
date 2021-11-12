@@ -20,6 +20,9 @@ export class App {
 
   static renderer: WebGLRenderer;
   static font: Font;
+  static config = {
+    fontSize: 10
+  }
 
   constructor() {
 
