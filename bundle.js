@@ -50862,16 +50862,18 @@ function loadData() {
     return d3.json("data.json");
 }
 function addCuboid(w, h, d, x, y, z, color, scene, node) {
-    let meshBasicMaterial = new THREE.MeshBasicMaterial({
+    let meshBasicMaterial = new THREE.MeshLambertMaterial({
         color: CityInfo.pool.colors(node.data.changes),
         opacity: 0.9,
         transparent: true
     });
-    const geometry = new THREE.BoxBufferGeometry(1, 1 + node.data.changes, 1);
+    const geometry = new THREE.BoxGeometry(1, 1 + node.data.changes, 1);
     // geometry.castShadow = true
     const cuboid = new THREE.Mesh(geometry, meshBasicMaterial);
     cuboid.position.set(x + w / 2, y, z + d / 2);
     cuboid.scale.set(w, h, d);
+    cuboid.receiveShadow = true;
+    cuboid.castShadow = true;
     const frame = new THREE.LineSegments(CityInfo.pool.edgeGeometry, CityInfo.pool.lineMaterials[color]);
     cuboid.add(frame);
     scene.add(cuboid);
