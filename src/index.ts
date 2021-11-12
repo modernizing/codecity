@@ -75,31 +75,23 @@ function createControllers() {
 }
 
 function createLights() {
-  // const light = new THREE.DirectionalLight(0xffff00, 0.8);
-  // light.position.set(App.width / 2, App.depth / 2, App.height / 2);
-  // light.castShadow = true;
-  // light.shadow.mapSize.set(4096, 4096);
-  // App.scene.add(light);
-  // App.debugPoint(App.width / 2, App.depth / 2, App.height / 2);
-  //
-  // const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
-  // spotLightReverse.position.set(App.width, App.depth, App.height);
-  // spotLightReverse.castShadow = true;
-  // App.scene.add(spotLightReverse);
+  const light = new THREE.DirectionalLight(0xffff00, 0.8);
+  light.position.set(App.width / 2, App.depth / 2, App.height / 2);
+  light.castShadow = true;
+  light.shadow.mapSize.set(4096, 4096);
+  App.scene.add(light);
+  const base = new THREE.CameraHelper(light.shadow.camera);
+  App.scene.add(base);
 
   const dlight = new THREE.SpotLight(0xffffff);
-  dlight.castShadow = true; // default false
-  dlight.position.set(App.width / 2, App.depth / 2, App.height / 2); //default; light shining from top
-  dlight.castShadow = true; // default false
+  dlight.castShadow = true;
+  dlight.position.set(App.width / 2, App.depth, App.height / 2);
   App.scene.add(dlight);
 
-//Set up shadow properties for the light
-  dlight.shadow.mapSize.width = 2048; // default
-  dlight.shadow.mapSize.height = 2048; // default
-  dlight.shadow.camera.near = 0.5; // default
-  dlight.shadow.camera.far = 1800; // default
-  dlight.shadow.focus = 1; // default
-
+  dlight.shadow.mapSize.set(4096, 4096);
+  dlight.shadow.camera.near = 0.5;
+  dlight.shadow.camera.far = 2400;
+  dlight.shadow.focus = 1;
 
   const helper = new THREE.CameraHelper(dlight.shadow.camera);
   App.scene.add(helper);
