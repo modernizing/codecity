@@ -50797,10 +50797,21 @@ class App {
         App.controls.target.set(0, 0, 0);
         App.controls.update();
     }
+    static debugPoint(x, y, z) {
+        const geometry = new THREE.SphereGeometry(15, 32, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const sphere = new THREE.Mesh(geometry, material);
+        sphere.position.set(x, y, z);
+        App.scene.add(sphere);
+    }
 }
 exports.App = App;
-App.width = 1000;
-App.height = 1000;
+// x
+App.height = 600;
+// z
+App.width = 1800;
+// y
+App.depth = 1000;
 
 
 /***/ }),
@@ -50819,6 +50830,7 @@ const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three
 const d3 = __webpack_require__(/*! d3 */ "./node_modules/d3/src/index.js");
 const App_1 = __webpack_require__(/*! ./App */ "./src/App.ts");
 const TextGeometry_1 = __webpack_require__(/*! three/examples/jsm/geometries/TextGeometry */ "./node_modules/three/examples/jsm/geometries/TextGeometry.js");
+const BoxLineGeometry_1 = __webpack_require__(/*! three/examples/jsm/geometries/BoxLineGeometry */ "./node_modules/three/examples/jsm/geometries/BoxLineGeometry.js");
 let CityInfo = {
     maxLines: 0,
     maxChanges: 0,
@@ -50826,7 +50838,7 @@ let CityInfo = {
 };
 function treemap(data) {
     let root = d3.treemap()
-        .size([1000, 1000])
+        .size([App_1.App.width, App_1.App.height])
         .paddingOuter(5)
         .paddingInner(5)
         .paddingTop(20)
@@ -50850,8 +50862,15 @@ function loadData() {
     return d3.json("data.json");
 }
 function addCuboid(w, h, d, x, y, z, color, scene, node) {
-    const cuboid = new THREE.Mesh(CityInfo.pool.geometry, CityInfo.pool.materials[color]);
-    cuboid.position.set(x + w / 2 - App_1.App.width / 2, y, z + d / 2 - App_1.App.width / 2);
+    let meshBasicMaterial = new THREE.MeshBasicMaterial({
+        color: CityInfo.pool.colors(node.data.changes),
+        opacity: 0.9,
+        transparent: true
+    });
+    const geometry = new THREE.BoxBufferGeometry(1, 1 + node.data.changes, 1);
+    // geometry.castShadow = true
+    const cuboid = new THREE.Mesh(geometry, meshBasicMaterial);
+    cuboid.position.set(x + w / 2, y, z + d / 2);
     cuboid.scale.set(w, h, d);
     const frame = new THREE.LineSegments(CityInfo.pool.edgeGeometry, CityInfo.pool.lineMaterials[color]);
     cuboid.add(frame);
@@ -50861,7 +50880,12 @@ function addCuboid(w, h, d, x, y, z, color, scene, node) {
 function createpool(chartData) {
     const color = d3.scaleSequential([8, 0], d3.interpolateMagma);
     const geometry = new THREE.BoxBufferGeometry(1, 1, 1), colors = chartData.map(layer => color(layer[0]));
+    const change_colors = d3.scaleQuantize()
+        .domain([0, CityInfo.maxChanges])
+        .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+        "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
     return {
+        colors: change_colors,
         geometry,
         materials: colors.map(color => new THREE.MeshBasicMaterial({
             color,
@@ -50876,49 +50900,54 @@ function createpool(chartData) {
         textMaterial: new THREE.MeshBasicMaterial({ color: 0x333333 })
     };
 }
-function createCity(scene) {
+function createCity() {
     return loadData().then((data) => {
         let buildings = treemap(data);
         CityInfo.pool = createpool(buildings);
+        const city = new THREE.LineSegments(new BoxLineGeometry_1.BoxLineGeometry(10, 10, 10, 10, 10, 10).translate(0, 0, 0), new THREE.LineBasicMaterial({ color: 0x808080 }));
+        city.position.set(-App_1.App.width / 2, 0, -App_1.App.height / 2);
         buildings.forEach(layer => layer[1].forEach((node) => {
             const h = 6, hh = h / 2, w = node.x1 - node.x0, d = node.y1 - node.y0, cl = buildings.length - node.height - 1;
             const format = d3.format(",d"), fontSize = 10, tolerance = 0.6;
             function estimate(text) {
                 return text.length * fontSize * tolerance;
             }
-            const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, scene, node);
+            const cuboid = addCuboid(w, h, d, node.x0, cl * h, node.y0, cl, city, node);
             const rx = Math.PI * 1.5;
             if (node.children) {
                 let label = `${node.data.name} ${format(node.value)}`;
                 if (estimate(label) > w)
                     label = node.data.name;
-                if (estimate(label) < w)
-                    addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + 12, rx, 0, 0);
+                if (estimate(label) < w) {
+                    let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + 12, rx, 0, 0, node);
+                    city.add(mesh);
+                }
             }
             else {
-                const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(format(node.value)), max = Math.max(...labels.map(label => label.length * fontSize * tolerance));
+                const labels = node.data.name.split(/(?=[A-Z][^A-Z])/g).concat(`${format(node.value)}, ${format(node.data.changes)}`), max = Math.max(...labels.map(label => label.length * fontSize * tolerance));
                 if (max < w) {
                     if (labels.length * fontSize > d)
                         labels.pop();
                     if (labels.length * fontSize < d) {
                         labels.forEach((label, i) => {
-                            addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + (i * 12) + 12, rx, 0, 0);
+                            let mesh = addText(label, fontSize, 0.3, node.x0 + 2, cl * h + hh, node.y0 + (i * 12) + 12, rx, 0, 0, node);
+                            city.add(mesh);
                         });
                     }
                 }
             }
         }));
+        App_1.App.scene.add(city);
     });
 }
 exports.createCity = createCity;
-function addText(text, size, h, x, y, z, rx, ry, rz) {
+function addText(text, size, h, x, y, z, rx, ry, rz, node) {
     const geometry = new TextGeometry_1.TextGeometry(text, { font: App_1.App.font, size, height: h });
     geometry.computeBoundingSphere();
     geometry.computeVertexNormals();
     const mesh = new THREE.Mesh(geometry, CityInfo.pool.textMaterial);
-    mesh.position.set(x - App_1.App.width / 2, y, z - App_1.App.width / 2);
+    mesh.position.set(x, y + node.data.changes * 2, z);
     mesh.rotation.set(rx, ry, rz);
-    App_1.App.scene.add(mesh);
     return mesh;
 }
 
@@ -85952,6 +85981,88 @@ class MapControls extends OrbitControls {
 
 /***/ }),
 
+/***/ "./node_modules/three/examples/jsm/geometries/BoxLineGeometry.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/three/examples/jsm/geometries/BoxLineGeometry.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BoxLineGeometry": () => (/* binding */ BoxLineGeometry)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+
+class BoxLineGeometry extends three__WEBPACK_IMPORTED_MODULE_0__.BufferGeometry {
+
+	constructor( width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1 ) {
+
+		super();
+
+		widthSegments = Math.floor( widthSegments );
+		heightSegments = Math.floor( heightSegments );
+		depthSegments = Math.floor( depthSegments );
+
+		const widthHalf = width / 2;
+		const heightHalf = height / 2;
+		const depthHalf = depth / 2;
+
+		const segmentWidth = width / widthSegments;
+		const segmentHeight = height / heightSegments;
+		const segmentDepth = depth / depthSegments;
+
+		const vertices = [];
+
+		let x = - widthHalf;
+		let y = - heightHalf;
+		let z = - depthHalf;
+
+		for ( let i = 0; i <= widthSegments; i ++ ) {
+
+			vertices.push( x, - heightHalf, - depthHalf, x, heightHalf, - depthHalf );
+			vertices.push( x, heightHalf, - depthHalf, x, heightHalf, depthHalf );
+			vertices.push( x, heightHalf, depthHalf, x, - heightHalf, depthHalf );
+			vertices.push( x, - heightHalf, depthHalf, x, - heightHalf, - depthHalf );
+
+			x += segmentWidth;
+
+		}
+
+		for ( let i = 0; i <= heightSegments; i ++ ) {
+
+			vertices.push( - widthHalf, y, - depthHalf, widthHalf, y, - depthHalf );
+			vertices.push( widthHalf, y, - depthHalf, widthHalf, y, depthHalf );
+			vertices.push( widthHalf, y, depthHalf, - widthHalf, y, depthHalf );
+			vertices.push( - widthHalf, y, depthHalf, - widthHalf, y, - depthHalf );
+
+			y += segmentHeight;
+
+		}
+
+		for ( let i = 0; i <= depthSegments; i ++ ) {
+
+			vertices.push( - widthHalf, - heightHalf, z, - widthHalf, heightHalf, z );
+			vertices.push( - widthHalf, heightHalf, z, widthHalf, heightHalf, z );
+			vertices.push( widthHalf, heightHalf, z, widthHalf, - heightHalf, z );
+			vertices.push( widthHalf, - heightHalf, z, - widthHalf, - heightHalf, z );
+
+			z += segmentDepth;
+
+		}
+
+		this.setAttribute( 'position', new three__WEBPACK_IMPORTED_MODULE_0__.Float32BufferAttribute( vertices, 3 ) );
+
+	}
+
+}
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/three/examples/jsm/geometries/TextGeometry.js":
 /*!********************************************************************!*\
   !*** ./node_modules/three/examples/jsm/geometries/TextGeometry.js ***!
@@ -91880,7 +91991,7 @@ const scaling = {
 const spheres = [];
 init();
 animate();
-function createrControllers() {
+function createControllers() {
     // controllers
     controller1 = App_1.App.renderer.xr.getController(0);
     App_1.App.scene.add(controller1);
@@ -91916,15 +92027,30 @@ function createrControllers() {
     controller2.add(line.clone());
 }
 function createLights() {
-    const light = new THREE.DirectionalLight(0xffffff, 0.8);
-    light.position.set(App_1.App.width, App_1.App.height, -App_1.App.width);
-    light.castShadow = true;
-    light.shadow.mapSize.set(4096, 4096);
-    App_1.App.scene.add(light);
-    const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
-    spotLightReverse.position.set(-App_1.App.width, App_1.App.height, -App_1.App.width);
-    spotLightReverse.castShadow = true;
-    App_1.App.scene.add(spotLightReverse);
+    // const light = new THREE.DirectionalLight(0xffff00, 0.8);
+    // light.position.set(App.width / 2, App.depth / 2, App.height / 2);
+    // light.castShadow = true;
+    // light.shadow.mapSize.set(4096, 4096);
+    // App.scene.add(light);
+    // App.debugPoint(App.width / 2, App.depth / 2, App.height / 2);
+    //
+    // const spotLightReverse = new THREE.SpotLight(0x534da7, 0.2);
+    // spotLightReverse.position.set(App.width, App.depth, App.height);
+    // spotLightReverse.castShadow = true;
+    // App.scene.add(spotLightReverse);
+    const dlight = new THREE.SpotLight(0xffffff);
+    dlight.castShadow = true; // default false
+    dlight.position.set(App_1.App.width / 2, App_1.App.depth / 2, App_1.App.height / 2); //default; light shining from top
+    dlight.castShadow = true; // default false
+    App_1.App.scene.add(dlight);
+    //Set up shadow properties for the light
+    dlight.shadow.mapSize.width = 2048; // default
+    dlight.shadow.mapSize.height = 2048; // default
+    dlight.shadow.camera.near = 0.5; // default
+    dlight.shadow.camera.far = 1800; // default
+    dlight.shadow.focus = 1; // default
+    const helper = new THREE.CameraHelper(dlight.shadow.camera);
+    App_1.App.scene.add(helper);
 }
 function init() {
     App_1.App.container = document.createElement('div');
@@ -91932,29 +92058,30 @@ function init() {
     App_1.App.scene = new THREE.Scene();
     App_1.App.scene.background = new THREE.Color(0x444444);
     App_1.App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-    App_1.App.camera.position.set(App_1.App.width, App_1.App.height, App_1.App.height);
+    App_1.App.camera.position.set(0, App_1.App.depth * 2, App_1.App.height);
+    const axesHelper = new THREE.AxesHelper(1000);
+    App_1.App.scene.add(axesHelper);
     App_1.App.createControls();
-    const floorGeometry = new THREE.PlaneGeometry(App_1.App.width, App_1.App.height);
+    const floorGeometry = new THREE.PlaneGeometry(App_1.App.width * 2, App_1.App.height * 2);
     const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
+    floor.position.set(0, 0, 0);
     App_1.App.scene.add(floor);
     const loader = new FontLoader_1.FontLoader();
     loader.load('fonts/droid_sans_regular.typeface.json', function (font) {
         App_1.App.font = font;
-        (0, City_1.createCity)(App_1.App.scene).then(() => {
+        (0, City_1.createCity)().then(() => {
+            createLights();
         });
     });
     App_1.App.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
-    createLights();
     App_1.App.createRender();
     document.body.appendChild(VRButton_js_1.VRButton.createButton(App_1.App.renderer));
-    createrControllers();
+    createControllers();
     App_1.App.createStats();
     window.addEventListener('resize', onWindowResize);
-    // App.container.addEventListener("mousemove", trackMouse, false);
-    // App.container.addEventListener("dblclick", zoom, false);
 }
 function onWindowResize() {
     App_1.App.camera.aspect = window.innerWidth / window.innerHeight;
