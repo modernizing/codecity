@@ -7,7 +7,6 @@ import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
 
 import {createCity} from "./City";
 import {App} from "./App";
-import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
 
 let hand1, hand2;
 let controller1, controller2;
