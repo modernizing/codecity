@@ -50806,6 +50806,7 @@ class App {
     }
 }
 exports.App = App;
+App.isDebug = false;
 // x
 App.height = 600;
 // z
@@ -92042,8 +92043,10 @@ function createLights() {
     light.castShadow = true;
     light.shadow.mapSize.set(4096, 4096);
     App_1.App.scene.add(light);
-    const base = new THREE.CameraHelper(light.shadow.camera);
-    App_1.App.scene.add(base);
+    if (App_1.App.isDebug) {
+        const base = new THREE.CameraHelper(light.shadow.camera);
+        App_1.App.scene.add(base);
+    }
     const dlight = new THREE.SpotLight(0xffffff);
     dlight.castShadow = true;
     dlight.position.set(App_1.App.width / 2, App_1.App.depth, App_1.App.height / 2);
@@ -92052,8 +92055,10 @@ function createLights() {
     dlight.shadow.camera.near = 0.5;
     dlight.shadow.camera.far = 2400;
     dlight.shadow.focus = 1;
-    const helper = new THREE.CameraHelper(dlight.shadow.camera);
-    App_1.App.scene.add(helper);
+    if (App_1.App.isDebug) {
+        const helper = new THREE.CameraHelper(dlight.shadow.camera);
+        App_1.App.scene.add(helper);
+    }
 }
 function init() {
     App_1.App.container = document.createElement('div');
@@ -92062,8 +92067,10 @@ function init() {
     App_1.App.scene.background = new THREE.Color(0x444444);
     App_1.App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100000);
     App_1.App.camera.position.set(0, App_1.App.depth * 2, App_1.App.height);
-    const axesHelper = new THREE.AxesHelper(1000);
-    App_1.App.scene.add(axesHelper);
+    if (App_1.App.isDebug) {
+        const axesHelper = new THREE.AxesHelper(1000);
+        App_1.App.scene.add(axesHelper);
+    }
     App_1.App.createControls();
     const floorGeometry = new THREE.PlaneGeometry(App_1.App.width * 2, App_1.App.height * 2);
     const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
