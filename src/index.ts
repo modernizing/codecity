@@ -80,8 +80,11 @@ function createLights() {
   light.castShadow = true;
   light.shadow.mapSize.set(4096, 4096);
   App.scene.add(light);
-  const base = new THREE.CameraHelper(light.shadow.camera);
-  App.scene.add(base);
+
+  if (App.isDebug) {
+    const base = new THREE.CameraHelper(light.shadow.camera);
+    App.scene.add(base);
+  }
 
   const dlight = new THREE.SpotLight(0xffffff);
   dlight.castShadow = true;
@@ -93,8 +96,10 @@ function createLights() {
   dlight.shadow.camera.far = 2400;
   dlight.shadow.focus = 1;
 
-  const helper = new THREE.CameraHelper(dlight.shadow.camera);
-  App.scene.add(helper);
+  if (App.isDebug) {
+    const helper = new THREE.CameraHelper(dlight.shadow.camera);
+    App.scene.add(helper);
+  }
 }
 
 function init() {
@@ -107,8 +112,10 @@ function init() {
   App.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100000);
   App.camera.position.set(0, App.depth * 2, App.height);
 
-  const axesHelper = new THREE.AxesHelper(1000);
-  App.scene.add(axesHelper);
+  if (App.isDebug) {
+    const axesHelper = new THREE.AxesHelper(1000);
+    App.scene.add(axesHelper);
+  }
 
   App.createControls();
 

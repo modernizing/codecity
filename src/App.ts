@@ -5,7 +5,7 @@ import * as Stats from "stats.js";
 import {Font} from "three/examples/jsm/loaders/FontLoader";
 
 export class App {
-  isDebug: boolean
+  static isDebug: boolean = false;
   static stats: Stats;
   static container: HTMLElement;
   static scene: Scene;
