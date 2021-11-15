@@ -9,8 +9,8 @@ Codecity 是一个用于在元宇宙中进行遗留系统分析的工具。
 - [ ] code explorer with city
   - [ ] interactive
   - [ ] tooltip
-- [ ] support for XR
-  - [ ] Oculus Quest
+- [ ] support for XR devices
+  - [ ] Oculus Quest 2
   - [ ] others
 - [ ] code analysis
   - [ ] show struct
