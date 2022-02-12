@@ -29,49 +29,61 @@ init();
 animate();
 
 function createControllers() {
-  // controllers
+  function onSelectStart() {
+    console.log("onSelectStart");
+  }
+
+  function onSelectEnd() {
+    console.log("onSelectEnd");
+  }
+
+  function buildController( data ) {
+    let geometry, material;
+    switch ( data.targetRayMode ) {
+      case 'tracked-pointer':
+        geometry = new THREE.BufferGeometry();
+        geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( [ 0, 0, 0, 0, 0, - 1 ], 3 ) );
+        geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( [ 0.5, 0.5, 0.5, 0, 0, 0 ], 3 ) );
+
+        material = new THREE.LineBasicMaterial( { vertexColors: true, blending: THREE.AdditiveBlending } );
+        return new THREE.Line( geometry, material );
+
+      case 'gaze':
+        geometry = new THREE.RingGeometry( 0.02, 0.04, 32 ).translate( 0, 0, - 1 );
+        material = new THREE.MeshBasicMaterial( { opacity: 0.5, transparent: true } );
+        return new THREE.Mesh( geometry, material );
+    }
+  }
+
   controller1 = App.renderer.xr.getController(0);
+  controller1.addEventListener( 'selectstart', onSelectStart );
+  controller1.addEventListener( 'selectend', onSelectEnd );
+  controller1.addEventListener( 'connected', function ( event ) {
+    this.add( buildController( event.data ) );
+  });
+  controller1.addEventListener( 'disconnected', function () {
+    this.remove( this.children[ 0 ] );
+  } );
+
   App.scene.add(controller1);
 
   controller2 = App.renderer.xr.getController(1);
   App.scene.add(controller2);
 
+  // The XRControllerModelFactory will automatically fetch controller models
+  // that match what the user is holding as closely as possible. The models
+  // should be attached to the object returned from getControllerGrip in
+  // order to match the orientation of the held device.
+
   const controllerModelFactory = new XRControllerModelFactory();
-  const handModelFactory = new XRHandModelFactory();
 
-  // Hand 1
-  controllerGrip1 = App.renderer.xr.getControllerGrip(0);
-  controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
-  App.scene.add(controllerGrip1);
+  controllerGrip1 = App.renderer.xr.getControllerGrip( 0 );
+  controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
+  App.scene.add( controllerGrip1 );
 
-  hand1 = App.renderer.xr.getHand(0);
-  hand1.addEventListener('pinchstart', onPinchStartLeft);
-  hand1.addEventListener('pinchend', () => {
-    scaling.active = false;
-  });
-  hand1.add(handModelFactory.createHandModel(hand1));
-
-  App.scene.add(hand1);
-
-  // Hand 2
-  controllerGrip2 = App.renderer.xr.getControllerGrip(1);
-  controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
-  App.scene.add(controllerGrip2);
-
-  hand2 = App.renderer.xr.getHand(1);
-  hand2.addEventListener('pinchstart', onPinchStartRight);
-  hand2.addEventListener('pinchend', onPinchEndRight);
-  hand2.add(handModelFactory.createHandModel(hand2));
-  App.scene.add(hand2);
-
-  const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
-
-  const line = new THREE.Line(geometry);
-  line.name = 'line';
-  line.scale.z = 5;
-
-  controller1.add(line.clone());
-  controller2.add(line.clone());
+  controllerGrip2 = App.renderer.xr.getControllerGrip( 1 );
+  controllerGrip2.add( controllerModelFactory.createControllerModel( controllerGrip2 ) );
+  App.scene.add( controllerGrip2 );
 }
 
 function createLights() {
@@ -252,6 +264,8 @@ function render() {
     scaling.object.scale.setScalar(newScale);
   }
 
-  App.renderer.render(App.scene, App.camera);
+  App.renderer.setAnimationLoop( function () {
+    App.renderer.render( App.scene, App.camera );
+  } );
   App.stats.update();
 }
