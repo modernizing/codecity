@@ -25,7 +25,11 @@ install WebVR extension:
 
 - Chrome: [WebXR API Emulator](https://chrome.google.com/webstore/detail/webxr-api-emulator/mjddjgeghkdijejnciaefnkjmkafnnje)
 
-refs:
+guide:
+
+- [Using VR controllers and locomotion in THREE.js](https://ada.is/blog/2020/05/18/using-vr-controllers-and-locomotion-in-threejs/) Left Controller 位置控制 Hand pos
+
+code refs:
 
 - [http://colordodge.com/ProceduralCity/](http://colordodge.com/ProceduralCity/)
 - [https://observablehq.com/@analyzer2004/3d-treemap](https://observablehq.com/@analyzer2004/3d-treemap)

@@ -25,7 +25,6 @@ export class App {
   }
 
   constructor() {
-
   }
 
   static createRender() {
@@ -35,6 +34,14 @@ export class App {
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.shadowMap.enabled = true;
     renderer.xr.enabled = true;
+    renderer.xr.setReferenceSpaceType( 'local' );
+    renderer.xr.addEventListener( 'sessionstart', function ( event ) {
+      App.controls.enabled = false;
+    } );
+
+    renderer.xr.addEventListener( 'sessionend', function ( event ) {
+      App.controls.enabled = true;
+    } );
 
     App.renderer = renderer;
 
