@@ -577,6 +577,13 @@ class App {
         renderer.outputEncoding = THREE.sRGBEncoding;
         renderer.shadowMap.enabled = true;
         renderer.xr.enabled = true;
+        renderer.xr.setReferenceSpaceType('local');
+        renderer.xr.addEventListener('sessionstart', function (event) {
+            App.controls.enabled = false;
+        });
+        renderer.xr.addEventListener('sessionend', function (event) {
+            App.controls.enabled = true;
+        });
         App.renderer = renderer;
         App.container.appendChild(renderer.domElement);
     }
@@ -129329,357 +129336,6 @@ class XRControllerModelFactory {
 
 
 
-/***/ }),
-
-/***/ "./node_modules/three/examples/jsm/webxr/XRHandMeshModel.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/three/examples/jsm/webxr/XRHandMeshModel.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "XRHandMeshModel": () => (/* binding */ XRHandMeshModel)
-/* harmony export */ });
-/* harmony import */ var _loaders_GLTFLoader_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loaders/GLTFLoader.js */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
-
-
-const DEFAULT_HAND_PROFILE_PATH = 'https://cdn.jsdelivr.net/npm/@webxr-input-profiles/assets@1.0/dist/profiles/generic-hand/';
-
-class XRHandMeshModel {
-
-	constructor( handModel, controller, path, handedness ) {
-
-		this.controller = controller;
-		this.handModel = handModel;
-
-		this.bones = [];
-
-		const loader = new _loaders_GLTFLoader_js__WEBPACK_IMPORTED_MODULE_0__.GLTFLoader();
-		loader.setPath( path || DEFAULT_HAND_PROFILE_PATH );
-		loader.load( `${handedness}.glb`, gltf => {
-
-			const object = gltf.scene.children[ 0 ];
-			this.handModel.add( object );
-
-			const mesh = object.getObjectByProperty( 'type', 'SkinnedMesh' );
-			mesh.frustumCulled = false;
-			mesh.castShadow = true;
-			mesh.receiveShadow = true;
-
-			const joints = [
-				'wrist',
-				'thumb-metacarpal',
-				'thumb-phalanx-proximal',
-				'thumb-phalanx-distal',
-				'thumb-tip',
-				'index-finger-metacarpal',
-				'index-finger-phalanx-proximal',
-				'index-finger-phalanx-intermediate',
-				'index-finger-phalanx-distal',
-				'index-finger-tip',
-				'middle-finger-metacarpal',
-				'middle-finger-phalanx-proximal',
-				'middle-finger-phalanx-intermediate',
-				'middle-finger-phalanx-distal',
-				'middle-finger-tip',
-				'ring-finger-metacarpal',
-				'ring-finger-phalanx-proximal',
-				'ring-finger-phalanx-intermediate',
-				'ring-finger-phalanx-distal',
-				'ring-finger-tip',
-				'pinky-finger-metacarpal',
-				'pinky-finger-phalanx-proximal',
-				'pinky-finger-phalanx-intermediate',
-				'pinky-finger-phalanx-distal',
-				'pinky-finger-tip',
-			];
-
-			joints.forEach( jointName => {
-
-				const bone = object.getObjectByName( jointName );
-
-				if ( bone !== undefined ) {
-
-					bone.jointName = jointName;
-
-				} else {
-
-					console.warn( `Couldn't find ${jointName} in ${handedness} hand mesh` );
-
-				}
-
-				this.bones.push( bone );
-
-			} );
-
-		} );
-
-	}
-
-	updateMesh() {
-
-		// XR Joints
-		const XRJoints = this.controller.joints;
-
-		for ( let i = 0; i < this.bones.length; i ++ ) {
-
-			const bone = this.bones[ i ];
-
-			if ( bone ) {
-
-				const XRJoint = XRJoints[ bone.jointName ];
-
-				if ( XRJoint.visible ) {
-
-					const position = XRJoint.position;
-
-					if ( bone ) {
-
-						bone.position.copy( position );
-						bone.quaternion.copy( XRJoint.quaternion );
-						// bone.scale.setScalar( XRJoint.jointRadius || defaultRadius );
-
-					}
-
-				}
-
-			}
-
-		}
-
-	}
-
-}
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/three/examples/jsm/webxr/XRHandModelFactory.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/three/examples/jsm/webxr/XRHandModelFactory.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "XRHandModelFactory": () => (/* binding */ XRHandModelFactory)
-/* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _XRHandPrimitiveModel_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./XRHandPrimitiveModel.js */ "./node_modules/three/examples/jsm/webxr/XRHandPrimitiveModel.js");
-/* harmony import */ var _XRHandMeshModel_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./XRHandMeshModel.js */ "./node_modules/three/examples/jsm/webxr/XRHandMeshModel.js");
-
-
-
-
-
-
-class XRHandModel extends three__WEBPACK_IMPORTED_MODULE_2__.Object3D {
-
-	constructor( controller ) {
-
-		super();
-
-		this.controller = controller;
-		this.motionController = null;
-		this.envMap = null;
-
-		this.mesh = null;
-
-	}
-
-	updateMatrixWorld( force ) {
-
-		super.updateMatrixWorld( force );
-
-		if ( this.motionController ) {
-
-			this.motionController.updateMesh();
-
-		}
-
-	}
-
-}
-
-class XRHandModelFactory {
-
-	constructor() {
-
-		this.path = null;
-
-	}
-
-	setPath( path ) {
-
-		this.path = path;
-
-		return this;
-
-	}
-
-	createHandModel( controller, profile ) {
-
-		const handModel = new XRHandModel( controller );
-
-		controller.addEventListener( 'connected', ( event ) => {
-
-			const xrInputSource = event.data;
-
-			if ( xrInputSource.hand && ! handModel.motionController ) {
-
-				handModel.xrInputSource = xrInputSource;
-
-				// @todo Detect profile if not provided
-				if ( profile === undefined || profile === 'spheres' ) {
-
-					handModel.motionController = new _XRHandPrimitiveModel_js__WEBPACK_IMPORTED_MODULE_0__.XRHandPrimitiveModel( handModel, controller, this.path, xrInputSource.handedness, { primitive: 'sphere' } );
-
-				} else if ( profile === 'boxes' ) {
-
-					handModel.motionController = new _XRHandPrimitiveModel_js__WEBPACK_IMPORTED_MODULE_0__.XRHandPrimitiveModel( handModel, controller, this.path, xrInputSource.handedness, { primitive: 'box' } );
-
-				} else if ( profile === 'mesh' ) {
-
-					handModel.motionController = new _XRHandMeshModel_js__WEBPACK_IMPORTED_MODULE_1__.XRHandMeshModel( handModel, controller, this.path, xrInputSource.handedness );
-
-				}
-
-			}
-
-		} );
-
-		controller.addEventListener( 'disconnected', () => {
-
-			// handModel.motionController = null;
-			// handModel.remove( scene );
-			// scene = null;
-
-		} );
-
-		return handModel;
-
-	}
-
-}
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/three/examples/jsm/webxr/XRHandPrimitiveModel.js":
-/*!***********************************************************************!*\
-  !*** ./node_modules/three/examples/jsm/webxr/XRHandPrimitiveModel.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "XRHandPrimitiveModel": () => (/* binding */ XRHandPrimitiveModel)
-/* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-
-
-const _matrix = new three__WEBPACK_IMPORTED_MODULE_0__.Matrix4();
-const _vector = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
-
-class XRHandPrimitiveModel {
-
-	constructor( handModel, controller, path, handedness, options ) {
-
-		this.controller = controller;
-		this.handModel = handModel;
-		this.envMap = null;
-
-		let geometry;
-
-		if ( ! options || ! options.primitive || options.primitive === 'sphere' ) {
-
-			geometry = new three__WEBPACK_IMPORTED_MODULE_0__.SphereGeometry( 1, 10, 10 );
-
-		} else if ( options.primitive === 'box' ) {
-
-			geometry = new three__WEBPACK_IMPORTED_MODULE_0__.BoxGeometry( 1, 1, 1 );
-
-		}
-
-		const material = new three__WEBPACK_IMPORTED_MODULE_0__.MeshStandardMaterial();
-
-		this.handMesh = new three__WEBPACK_IMPORTED_MODULE_0__.InstancedMesh( geometry, material, 30 );
-		this.handMesh.instanceMatrix.setUsage( three__WEBPACK_IMPORTED_MODULE_0__.DynamicDrawUsage ); // will be updated every frame
-		this.handMesh.castShadow = true;
-		this.handMesh.receiveShadow = true;
-		this.handModel.add( this.handMesh );
-
-		this.joints = [
-			'wrist',
-			'thumb-metacarpal',
-			'thumb-phalanx-proximal',
-			'thumb-phalanx-distal',
-			'thumb-tip',
-			'index-finger-metacarpal',
-			'index-finger-phalanx-proximal',
-			'index-finger-phalanx-intermediate',
-			'index-finger-phalanx-distal',
-			'index-finger-tip',
-			'middle-finger-metacarpal',
-			'middle-finger-phalanx-proximal',
-			'middle-finger-phalanx-intermediate',
-			'middle-finger-phalanx-distal',
-			'middle-finger-tip',
-			'ring-finger-metacarpal',
-			'ring-finger-phalanx-proximal',
-			'ring-finger-phalanx-intermediate',
-			'ring-finger-phalanx-distal',
-			'ring-finger-tip',
-			'pinky-finger-metacarpal',
-			'pinky-finger-phalanx-proximal',
-			'pinky-finger-phalanx-intermediate',
-			'pinky-finger-phalanx-distal',
-			'pinky-finger-tip'
-		];
-
-	}
-
-	updateMesh() {
-
-		const defaultRadius = 0.008;
-		const joints = this.controller.joints;
-
-		let count = 0;
-
-		for ( let i = 0; i < this.joints.length; i ++ ) {
-
-			const joint = joints[ this.joints[ i ] ];
-
-			if ( joint.visible ) {
-
-				_vector.setScalar( joint.jointRadius || defaultRadius );
-				_matrix.compose( joint.position, joint.quaternion, _vector );
-				this.handMesh.setMatrixAt( i, _matrix );
-
-				count ++;
-
-			}
-
-		}
-
-		this.handMesh.count = count;
-		this.handMesh.instanceMatrix.needsUpdate = true;
-
-	}
-
-}
-
-
-
-
 /***/ })
 
 /******/ 	});
@@ -129764,7 +129420,6 @@ __webpack_require__(/*! ../style.css */ "./style.css");
 const THREE = __webpack_require__(/*! three */ "./node_modules/three/build/three.cjs");
 const VRButton_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/VRButton.js */ "./node_modules/three/examples/jsm/webxr/VRButton.js");
 const XRControllerModelFactory_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/XRControllerModelFactory.js */ "./node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js");
-const XRHandModelFactory_js_1 = __webpack_require__(/*! three/examples/jsm/webxr/XRHandModelFactory.js */ "./node_modules/three/examples/jsm/webxr/XRHandModelFactory.js");
 const FontLoader_1 = __webpack_require__(/*! three/examples/jsm/loaders/FontLoader */ "./node_modules/three/examples/jsm/loaders/FontLoader.js");
 const City_1 = __webpack_require__(/*! ./City */ "./src/City.ts");
 const App_1 = __webpack_require__(/*! ./App */ "./src/App.ts");
@@ -129784,39 +129439,50 @@ const spheres = [];
 init();
 animate();
 function createControllers() {
-    // controllers
+    function onSelectStart() {
+        console.log("onSelectStart");
+    }
+    function onSelectEnd() {
+        console.log("onSelectEnd");
+    }
+    function buildController(data) {
+        let geometry, material;
+        switch (data.targetRayMode) {
+            case 'tracked-pointer':
+                geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, 0, 0, -1], 3));
+                geometry.setAttribute('color', new THREE.Float32BufferAttribute([0.5, 0.5, 0.5, 0, 0, 0], 3));
+                material = new THREE.LineBasicMaterial({ vertexColors: true, blending: THREE.AdditiveBlending });
+                return new THREE.Line(geometry, material);
+            case 'gaze':
+                geometry = new THREE.RingGeometry(0.02, 0.04, 32).translate(0, 0, -1);
+                material = new THREE.MeshBasicMaterial({ opacity: 0.5, transparent: true });
+                return new THREE.Mesh(geometry, material);
+        }
+    }
     controller1 = App_1.App.renderer.xr.getController(0);
+    controller1.addEventListener('selectstart', onSelectStart);
+    controller1.addEventListener('selectend', onSelectEnd);
+    controller1.addEventListener('connected', function (event) {
+        this.add(buildController(event.data));
+    });
+    controller1.addEventListener('disconnected', function () {
+        this.remove(this.children[0]);
+    });
     App_1.App.scene.add(controller1);
     controller2 = App_1.App.renderer.xr.getController(1);
     App_1.App.scene.add(controller2);
+    // The XRControllerModelFactory will automatically fetch controller models
+    // that match what the user is holding as closely as possible. The models
+    // should be attached to the object returned from getControllerGrip in
+    // order to match the orientation of the held device.
     const controllerModelFactory = new XRControllerModelFactory_js_1.XRControllerModelFactory();
-    const handModelFactory = new XRHandModelFactory_js_1.XRHandModelFactory();
-    // Hand 1
     controllerGrip1 = App_1.App.renderer.xr.getControllerGrip(0);
     controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
     App_1.App.scene.add(controllerGrip1);
-    hand1 = App_1.App.renderer.xr.getHand(0);
-    hand1.addEventListener('pinchstart', onPinchStartLeft);
-    hand1.addEventListener('pinchend', () => {
-        scaling.active = false;
-    });
-    hand1.add(handModelFactory.createHandModel(hand1));
-    App_1.App.scene.add(hand1);
-    // Hand 2
     controllerGrip2 = App_1.App.renderer.xr.getControllerGrip(1);
     controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
     App_1.App.scene.add(controllerGrip2);
-    hand2 = App_1.App.renderer.xr.getHand(1);
-    hand2.addEventListener('pinchstart', onPinchStartRight);
-    hand2.addEventListener('pinchend', onPinchEndRight);
-    hand2.add(handModelFactory.createHandModel(hand2));
-    App_1.App.scene.add(hand2);
-    const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
-    const line = new THREE.Line(geometry);
-    line.name = 'line';
-    line.scale.z = 5;
-    controller1.add(line.clone());
-    controller2.add(line.clone());
 }
 function createLights() {
     const light = new THREE.DirectionalLight(0xffff00, 0.8);
@@ -129954,7 +129620,9 @@ function render() {
         const newScale = scaling.initialScale + distance / scaling.initialDistance - 1;
         scaling.object.scale.setScalar(newScale);
     }
-    App_1.App.renderer.render(App_1.App.scene, App_1.App.camera);
+    App_1.App.renderer.setAnimationLoop(function () {
+        App_1.App.renderer.render(App_1.App.scene, App_1.App.camera);
+    });
     App_1.App.stats.update();
 }
 
